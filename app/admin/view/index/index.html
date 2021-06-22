@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="/static/component/images/favicon.ico" rel="icon">
     <title>小浣熊漫画CMS</title>
-    <link rel="stylesheet" href="/static/component/layui/css/layui.css"/>
-    <link rel="stylesheet" href="/static/component/module/admin.css"/>
+    <link rel="stylesheet" href="/static/admin/libs/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/static/admin/module/admin.css"/>
+</head>
 </head>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <!-- 头部 -->
     <div class="layui-header">
         <div class="layui-logo">
-            <img src="/static/component/images/logo.png"/>
+            <img src="/static/admin/images/logo.png"/>
             <cite>小浣熊漫画CMS</cite>
         </div>
         <ul class="layui-nav layui-layout-left">
@@ -31,7 +32,7 @@
             </li>
             <li class="layui-nav-item" lay-unselect>
                 <a>
-                    <img src="/static/component/images/head.jpg" class="layui-nav-img">
+                    <img src="/static/admin/images/head.jpg" class="layui-nav-img">
                     <cite>管理员</cite>
                 </a>
                 <dl class="layui-nav-child">
@@ -131,8 +132,8 @@
 </div>
 
 <!-- js部分 -->
-<script type="text/javascript" src="/static/component/layui/layui.js"></script>
-<script type="text/javascript" src="/static/component/js/common.js"></script>
+<script type="text/javascript" src="/static/admin/libs/layui/layui.js"></script>
+<script type="text/javascript" src="/static/admin/js/common.js"></script>
 <script>
     layui.use(['index', 'admin'], function () {
         var $ = layui.jquery;
