@@ -1,0 +1,502 @@
+{extend name="./template/fense/pc/pub/base.html" /}
+{include file="./template/fense/pc/pub/head.html"}
+<div class="acgn-container">
+    <div class="acgn-clearfix" style="width:100%">
+        <div class="acgn-col-24 acgn-col-space-none">
+            <div class="acgn-model acgn-model-index-banner acgn-space-none">
+                <div class="banner-wrapper">
+                    <div class="swiper">
+                        <div class="banner-container swiper-container">
+                            <ul class="swiper-wrapper">
+                                {raccoon:banners name="banners" order="banner_order desc"}
+                                <li class="swiper-slide swiper-slide-visible swiper-slide-active">
+                                    <a href="{if $end_point == 'id'}
+                                      /{$book_ctrl}/{$vo.book_id}
+                                      {else /}
+                                      /{$book_ctrl}/{$vo.book.unique_id}
+                                      {/if}"
+                                       class="banner-inner adapt-ratio-75x32">
+                                        <div class="adapt-inner">
+                                            <img class="pic-img" src="{$vo.pic_name}" alt="{$vo.title}">
+                                        </div>
+                                    </a>
+                                </li>
+                                {/raccoon:banners}
+                            </ul>
+                            <div class="swiper-menu-box">
+                                <div class="swiper-menu">
+                                    <div class="swiper-menu__list">
+                                        {raccoon:banners name="banners" order="banner_order desc"}
+                                        <div class="swiper-menu__list-item{$i == 1 ? 'active' : ''}">
+                                            <i class="icon-home-banner-love"></i>
+                                            <a class="swiper-menu__item-title" title="{$vo.title}">[comic:name]</a>
+                                            <a class="swiper-menu__item-info" title="{$vo.title}">{{$vo.title}}</a>
+                                        </div>
+                                        {/raccoon:banners}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-master"></div>
+                            <div class="swiper-master-wave"></div>
+                            <div class="banner-pagination">
+                                {raccoon:banners name="banners" order="banner_order desc"}
+                                <span class="swiper-pagination-switch{$i == 1 ? 'swiper-visible-switch swiper-active-switch' : ''}"></span>
+                                {/raccoon:banners}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div class="acgn-row acgn-model-index-links1">
+                <div class="link-box">
+                    <div class="acgn-col-24 acgn-col-space-middle link-box-wrap">
+                        <div id="m_202158_1095_1289" class="acgn-model" data-func-floatnav="">
+                            <div class="model-head">
+                                <ul class="menu">
+                                    {mccms:type table="type" field="id,name" where="fid=1" limit="23" order="xid asc"}
+                                    <li class="item">
+                                        <a class="item-text" href="[mccms_url_category_tags_[type:id]]" target="_blank" title="[type:name]漫画">[type:name]</a>
+                                    </li>
+                                    {/mccms:type}
+                                </ul>
+                                <a href="[mccms_url_category]" target="_blank" title="全部漫画" class="has-more" style="top: 15px;"><i class="big icon-home-btn-small">查看全部</i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div id="update" class="acgn-model acgn-model-index-update acgn-space-none acgn-model-index-update-0">
+                <div class="model-head">
+                    <i class="icon-home-update mask"></i>
+                    <h3 title="每日更新" class="title">每日更新</h3>
+                    <div class="tab-space">
+                        <ul class="week-tabs week-tabs-rabbit">
+                            {mccms:week}
+                            <li class="week-nav tab{if:'[week:num]' == '[mccms_week]'} active{end if}">{if:'[week:num]' == '[mccms_week]'}<i class="icon-comm-berry"></i>{end if}[week:name]</li>
+                            {/mccms:week}
+                        </ul>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <div class="brace-wrap">
+                        <div class="brace-x">
+                            <div class="blocks">
+                                {mccms:week}
+                                <div class="week-list js_block block{if:'[week:num]' == '[mccms_week]'} active{end if}">
+                                    {mccms:comic table="comic" field="*" where="addtime>[week:kstime] and addtime<[week:jstime]" limit="12" order="addtime desc"}
+                                    <div class="js_cells">
+                                        <div class="js_cell size-cell">
+                                            <div class="comic-cell">
+                                                <div class="adapt-ratio-3x4 adapt-adpter">
+                                                    <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="pic adapt-inner"><img class="bg lazy" src="[mccms_tpl]images/space.gif" data-original="[comic:pic]" alt="[comic:name],[comic:name]漫画"> <img src="[mccms_tpl]images/wave@2x.png" class="bg-wave" alt=""></a>
+                                                </div>
+                                                <div class="info">
+                                                    <h3 title="[comic:name]漫画" class="name">
+                                                        <a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a>
+                                                    </h3>
+                                                    <p class="desc">
+                                                        {if:'[comic:text]'==''}[comic:content len=15]{else}[comic:text]{end if}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {/mccms:comic}
+                                    <div class="js_bottom size-bottom">
+                                        <a href="[mccms_custom_update]" class="js_btn icon-home-btn-love">查看更多</a>
+                                    </div>
+                                </div>
+                                {/mccms:week}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div id="m_202170_1124_1295" class="acgn-model acgn-model-index-category acgn-space-none" data-func-floatnav="">
+                <div class="model-head">
+                    <i class="icon-home-hot mask"></i>
+                    <h2 title="热门分类" class="title">热门分类</h2>
+                    <div class="tab-space">
+                        <ul class="week-tabs week-tabs-cat">
+                            {mccms:type table="type" field="id,name" where="fid=1" limit="6" order="xid asc"}
+                            <li class="tags-nav tab{if:[type:i] == 1} active{end if}">[type:name]</li>
+                            {/mccms:type}
+                        </ul>
+                    </div>
+                    <div class="func-list">
+                        <a class="func-list-more" href="[mccms_url_category]" target="_blank" title="分类"><i class="func-list-more-bg icon-home-btn-small">查看更多</i></a>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <div class="brace-wrap">
+                        <div class="brace-x">
+                            {mccms:type table="type" field="id,name" where="fid=1" limit="6" order="xid asc"}
+                            <div class="tags-list block-item{if:[type:i]==1} active{end if}">
+                                {mccms:lists table="comic_type" field="*" where="tid=[type:id]" limit="14" order="id desc"}
+                                {mccms:comic table="comic" field="*" where="id=[lists:mid]" limit="1"}
+                                <div class="js_cells">
+                                    <div class="js_cell size-cell">
+                                        <div class="comic-cell">
+                                            <div class="adapt-ratio-3x4 adapt-adpter">
+                                                <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="pic adapt-inner"><img class="bg lazy" src="[mccms_tpl]images/space.gif" data-original="[comic:pic]" alt="[comic:name],[comic:name]漫画"> <img src="[mccms_tpl]images/wave@2x.png" class="bg-wave" alt=""></a>
+                                            </div>
+                                            <div class="info">
+                                                <h3 title="[comic:name]漫画" class="name">
+                                                    <a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/mccms:comic}
+                                {/mccms:lists}
+                            </div>
+                            {/mccms:type}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div class="acgn-model acgn-model-index-split-bottom">
+                <img class="pic" src="[mccms_tpl]images/bottom-split.png" alt="">
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div id="rank" class="acgn-model acgn-model-index-rank">
+                <div class="model-head">
+                    <i class="icon-home-renqi mask"></i>
+                    <h2 title="人气排行" class="title">人气排行</h2>
+                    <div class="tab-space">
+                        <ul class="week-tabs week-tabs-rabbit">
+                            <li class="hot-nav tab active">综合榜</li>
+                            <li class="hot-nav tab">新作榜</li>
+                            <li class="hot-nav tab">付费榜</li>
+                            <li class="hot-nav tab">免费榜</li>
+                            <li class="hot-nav tab">完结榜</li>
+                            <li class="hot-nav tab">连载榜</li>
+                        </ul>
+                    </div>
+                    <div class="func-list">
+                        <a class="func-list-more" href="[mccms_custom_hot]" target="_blank" title="排行"><i class="func-list-more-bg icon-home-btn-small">查看更多</i></a>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <div class="hot-list js_content content-row checked">
+                        <div class="js_groups groups active">
+                            <ul class="js_group group active">
+                                {mccms:comic table="comic" field="*" where="" limit="36" order="hits desc"}
+                                <li class="list">
+                                    <div class="mask mask-[comic:i]">{if:[comic:i]<10}0{end if}[comic:i]</div>
+                                    <div class="name">
+                                        <div class="name-inner js_list">
+                                            <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="text">[comic:name]</a>
+                                            <div class="point">
+                                                <div class="floater">
+                                                    <img class="floater-bg" src="[mccms_tpl]images/rank-comic-tv.png">
+                                                    <i class="triangle icon-home-triangle-left"></i>
+                                                    <a href="[comic:link]" target="_blank" title="[comic:name]漫画"><img src="[mccms_tpl]images/space.gif"
+                                                                                                                       alt="[comic:name],[comic:name]漫画" class="face" style="background: url('[comic:pic]') center center / cover no-repeat; opacity: 1;"></a>
+                                                    <h4 title="[comic:name]漫画" class="title"><a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a></h4>
+                                                    <p class="tags">[comic:tags url=1]</p>
+                                                    <p class="desc">{if:'[comic:text]'==''}[comic:content len=12]{else}[comic:text]{end if}</p>
+                                                    <div class="floater-bottom">
+                                                        <div class="floater-hot">
+                                                            <i class="imp icon-home-rank-hot"></i>
+                                                            <span>[comic:hits wan=1]<span></span></span>
+                                                        </div>
+                                                        <div class="desc">
+                                                            更至<a href="[comic:piclink]" target="_blank"
+                                                                 title="[comic:zdy zd=comic_chapter,name,id,mid]" class="imp">[comic:zdy zd=comic_chapter,name,id,mid]</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hot"><i class="icon-home-rank-hot"></i><span>[comic:hits wan=1]</span></div>
+                                    </div>
+                                </li>
+                                {/mccms:comic}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hot-list js_content content-row">
+                        <div class="js_groups groups active">
+                            <ul class="js_group group active">
+                                {mccms:comic table="comic" field="*" where="addtime>([mccms_time]-86400*10)" limit="36" order="rhits desc"}
+                                <li class="list">
+                                    <div class="mask mask-[comic:i]">{if:[comic:i]<10}0{end if}[comic:i]</div>
+                                    <div class="name">
+                                        <div class="name-inner js_list">
+                                            <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="text">[comic:name]</a>
+                                            <div class="point">
+                                                <div class="floater">
+                                                    <img class="floater-bg" src="[mccms_tpl]images/rank-comic-tv.png">
+                                                    <i class="triangle icon-home-triangle-left"></i>
+                                                    <a href="[comic:link]" target="_blank" title="[comic:name]漫画"><img src="[mccms_tpl]images/space.gif"
+                                                                                                                       alt="[comic:name],[comic:name]漫画" class="face" style="background: url('[comic:pic]') center center / cover no-repeat; opacity: 1;"></a>
+                                                    <h4 title="[comic:name]漫画" class="title"><a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a></h4>
+                                                    <p class="tags">[comic:tags url=1]</p>
+                                                    <p class="desc">{if:'[comic:text]'==''}[comic:content len=12]{else}[comic:text]{end if}</p>
+                                                    <div class="floater-bottom">
+                                                        <div class="floater-hot">
+                                                            <i class="imp icon-home-rank-hot"></i>
+                                                            <span>[comic:rhits wan=1]<span></span></span>
+                                                        </div>
+                                                        <div class="desc">
+                                                            更至<a href="[comic:piclink]" target="_blank"
+                                                                 title="[comic:zdy zd=comic_chapter,name,id,mid]" class="imp">[comic:zdy zd=comic_chapter,name,id,mid]</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hot"><i class="icon-home-rank-hot"></i><span>[comic:rhits wan=1]</span></div>
+                                    </div>
+                                </li>
+                                {/mccms:comic}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hot-list js_content content-row">
+                        <div class="js_groups groups active">
+                            <ul class="js_group group active">
+                                {mccms:comic table="comic" field="*" where="pay>0" limit="36" order="hits desc"}
+                                <li class="list">
+                                    <div class="mask mask-[comic:i]">{if:[comic:i]<10}0{end if}[comic:i]</div>
+                                    <div class="name">
+                                        <div class="name-inner js_list">
+                                            <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="text">[comic:name]</a>
+                                            <div class="point">
+                                                <div class="floater">
+                                                    <img class="floater-bg" src="[mccms_tpl]images/rank-comic-tv.png">
+                                                    <i class="triangle icon-home-triangle-left"></i>
+                                                    <a href="[comic:link]" target="_blank" title="[comic:name]漫画"><img src="[mccms_tpl]images/space.gif"
+                                                                                                                       alt="[comic:name],[comic:name]漫画" class="face" style="background: url('[comic:pic]') center center / cover no-repeat; opacity: 1;"></a>
+                                                    <h4 title="[comic:name]漫画" class="title"><a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a></h4>
+                                                    <p class="tags">[comic:tags url=1]</p>
+                                                    <p class="desc">{if:'[comic:text]'==''}[comic:content len=12]{else}[comic:text]{end if}</p>
+                                                    <div class="floater-bottom">
+                                                        <div class="floater-hot">
+                                                            <i class="imp icon-home-rank-hot"></i>
+                                                            <span>[comic:hits wan=1]<span></span></span>
+                                                        </div>
+                                                        <div class="desc">
+                                                            更至<a href="[comic:piclink]" target="_blank"
+                                                                 title="[comic:zdy zd=comic_chapter,name,id,mid]" class="imp">[comic:zdy zd=comic_chapter,name,id,mid]</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hot"><i class="icon-home-rank-hot"></i><span>[comic:hits wan=1]</span></div>
+                                    </div>
+                                </li>
+                                {/mccms:comic}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hot-list js_content content-row">
+                        <div class="js_groups groups active">
+                            <ul class="js_group group active">
+                                {mccms:comic table="comic" field="*" where="pay=0" limit="36" order="hits desc"}
+                                <li class="list">
+                                    <div class="mask mask-[comic:i]">{if:[comic:i]<10}0{end if}[comic:i]</div>
+                                    <div class="name">
+                                        <div class="name-inner js_list">
+                                            <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="text">[comic:name]</a>
+                                            <div class="point">
+                                                <div class="floater">
+                                                    <img class="floater-bg" src="[mccms_tpl]images/rank-comic-tv.png">
+                                                    <i class="triangle icon-home-triangle-left"></i>
+                                                    <a href="[comic:link]" target="_blank" title="[comic:name]漫画"><img src="[mccms_tpl]images/space.gif"
+                                                                                                                       alt="[comic:name],[comic:name]漫画" class="face" style="background: url('[comic:pic]') center center / cover no-repeat; opacity: 1;"></a>
+                                                    <h4 title="[comic:name]漫画" class="title"><a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a></h4>
+                                                    <p class="tags">[comic:tags url=1]</p>
+                                                    <p class="desc">{if:'[comic:text]'==''}[comic:content len=12]{else}[comic:text]{end if}</p>
+                                                    <div class="floater-bottom">
+                                                        <div class="floater-hot">
+                                                            <i class="imp icon-home-rank-hot"></i>
+                                                            <span>[comic:hits wan=1]<span></span></span>
+                                                        </div>
+                                                        <div class="desc">
+                                                            更至<a href="[comic:piclink]" target="_blank"
+                                                                 title="[comic:zdy zd=comic_chapter,name,id,mid]" class="imp">[comic:zdy zd=comic_chapter,name,id,mid]</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hot"><i class="icon-home-rank-hot"></i><span>[comic:hits wan=1]</span></div>
+                                    </div>
+                                </li>
+                                {/mccms:comic}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hot-list js_content content-row">
+                        <div class="js_groups groups active">
+                            <ul class="js_group group active">
+                                {mccms:comic table="comic" field="*" where="serialize='完结'" limit="36" order="hits desc"}
+                                <li class="list">
+                                    <div class="mask mask-[comic:i]">{if:[comic:i]<10}0{end if}[comic:i]</div>
+                                    <div class="name">
+                                        <div class="name-inner js_list">
+                                            <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="text">[comic:name]</a>
+                                            <div class="point">
+                                                <div class="floater">
+                                                    <img class="floater-bg" src="[mccms_tpl]images/rank-comic-tv.png">
+                                                    <i class="triangle icon-home-triangle-left"></i>
+                                                    <a href="[comic:link]" target="_blank" title="[comic:name]漫画"><img src="[mccms_tpl]images/space.gif"
+                                                                                                                       alt="[comic:name],[comic:name]漫画" class="face" style="background: url('[comic:pic]') center center / cover no-repeat; opacity: 1;"></a>
+                                                    <h4 title="[comic:name]漫画" class="title"><a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a></h4>
+                                                    <p class="tags">[comic:tags url=1]</p>
+                                                    <p class="desc">{if:'[comic:text]'==''}[comic:content len=12]{else}[comic:text]{end if}</p>
+                                                    <div class="floater-bottom">
+                                                        <div class="floater-hot">
+                                                            <i class="imp icon-home-rank-hot"></i>
+                                                            <span>[comic:hits wan=1]<span></span></span>
+                                                        </div>
+                                                        <div class="desc">
+                                                            更至<a href="[comic:piclink]" target="_blank"
+                                                                 title="[comic:zdy zd=comic_chapter,name,id,mid]" class="imp">[comic:zdy zd=comic_chapter,name,id,mid]</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hot"><i class="icon-home-rank-hot"></i><span>[comic:hits wan=1]</span></div>
+                                    </div>
+                                </li>
+                                {/mccms:comic}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="hot-list js_content content-row">
+                        <div class="js_groups groups active">
+                            <ul class="js_group group active">
+                                {mccms:comic table="comic" field="*" where="serialize like'%连载%'" limit="36" order="hits desc"}
+                                <li class="list">
+                                    <div class="mask mask-[comic:i]">{if:[comic:i]<10}0{end if}[comic:i]</div>
+                                    <div class="name">
+                                        <div class="name-inner js_list">
+                                            <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="text">[comic:name]</a>
+                                            <div class="point">
+                                                <div class="floater">
+                                                    <img class="floater-bg" src="[mccms_tpl]images/rank-comic-tv.png">
+                                                    <i class="triangle icon-home-triangle-left"></i>
+                                                    <a href="[comic:link]" target="_blank" title="[comic:name]漫画"><img src="[mccms_tpl]images/space.gif"
+                                                                                                                       alt="[comic:name],[comic:name]漫画" class="face" style="background: url('[comic:pic]') center center / cover no-repeat; opacity: 1;"></a>
+                                                    <h4 title="[comic:name]漫画" class="title"><a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a></h4>
+                                                    <p class="tags">[comic:tags url=1]</p>
+                                                    <p class="desc">{if:'[comic:text]'==''}[comic:content len=12]{else}[comic:text]{end if}</p>
+                                                    <div class="floater-bottom">
+                                                        <div class="floater-hot">
+                                                            <i class="imp icon-home-rank-hot"></i>
+                                                            <span>[comic:hits wan=1]<span></span></span>
+                                                        </div>
+                                                        <div class="desc">
+                                                            更至<a href="[comic:piclink]" target="_blank"
+                                                                 title="[comic:zdy zd=comic_chapter,name,id,mid]" class="imp">[comic:zdy zd=comic_chapter,name,id,mid]</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="hot"><i class="icon-home-rank-hot"></i><span>[comic:hits wan=1]</span></div>
+                                    </div>
+                                </li>
+                                {/mccms:comic}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div class="acgn-model acgn-model-index-book-nor acgn-space-normal" data-func-floatnav="">
+                <div class="model-head">
+                    <i class="icon-home-dynamic mask"></i>
+                    <h3 title="精选佳作" class="title">精选佳作</h3>
+                    <div class="func-list">
+                        <a class="func-list-more" href="[mccms_url_category_quality_39]" target="_blank" title="书单"><i class="func-list-more-bg icon-home-btn-small">查看更多</i></a>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <div class="brace-wrap">
+                        <div class="brace-x">
+                            <div class="blocks">
+                                <div class="js_block">
+                                    <div class="js_cells">
+                                        {mccms:type table="comic_type" field="mid" where="tid=39" limit="6" order="id desc"}
+                                        {mccms:comic table="comic" field="*" where="id=[type:mid]" limit="1"}
+                                        <div class="js_cells">
+                                            <div class="js_cell size-cell">
+                                                <div class="comic-cell">
+                                                    <div class="adapt-ratio-3x4 adapt-adpter">
+                                                        <a href="[comic:link]" target="_blank" title="[comic:name]漫画" class="pic adapt-inner"><img class="bg lazy" src="[mccms_tpl]images/space.gif" data-original="[comic:pic]" alt="[comic:name],[comic:name]漫画"> <img src="[mccms_tpl]images/wave@2x.png" class="bg-wave" alt=""></a>
+                                                    </div>
+                                                    <div class="info">
+                                                        <h3 title="[comic:name]漫画" class="name">
+                                                            <a href="[comic:link]" target="_blank" title="[comic:name]漫画">[comic:name]</a>
+                                                            <div class="num"><span class="num-strong">[comic:score]</span></div>
+                                                        </h3>
+                                                        <p class="desc">
+                                                            {if:'[comic:text]'==''}[comic:content len=15]{else}[comic:text]{end if}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/mccms:comic}
+                                        {/mccms:type}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div class="acgn-model acgn-model-index-friends acgn-space-normal">
+                <div class="model-head">
+                    <i class="icon-home-link mask"></i>
+                    <h2 title="友情链接" class="title">
+                        友情链接
+                    </h2>
+                </div>
+                <div class="model-content">
+                    <ul class="list">
+                        {mccms:link table="links" field="*" limit="all" order="id asc"}
+                        <li class="item">
+                            <p class="text"><a href="[link:url]" target="_blank" title="[link:name]">[link:name]</a></p>
+                        </li>
+                        {/mccms:link}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="./template/fense/pc/pub/bottom.html"}
