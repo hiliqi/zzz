@@ -14,12 +14,177 @@
     <link rel="Bookmark" href="/template/fense/images/favicon.ico"/>
     <link rel="stylesheet" href="/template/fense/css/css.css" type="text/css">
     <link rel="stylesheet" href="/template/fense/css/common.css" type="text/css">
-    <script src="/template/fense/js/jquery.lazyload.min.js"></script>
-    <script src="/template/fense/js/index.js?v=1.15"></script>
     <link rel="stylesheet" href="/template/fense/css/index.css" type="text/css">
+    <script src="https://lib.baomitu.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="/template/fense/js/jquery.lazyload.min.js"></script>
+    <script src="/template/fense/js/index.js"></script>
 </head>
 <body>
-
+<div class="acgn-clearfix" style="width:100%">
+    <div class="acgn-col-24 acgn-col-space-none">
+        <div id="m_202146_1092_1288" class="acgn-model acgn-model-header acgn-clearfix" data-func-floatnav="">
+            <div class="block-wrap block-wrap-fixed">
+                <div class="acgn-row">
+                    <div class="acgn-col-24">
+                        <div class="block-float block-float-right">
+                            <div class="func-menu">
+                                <div class="search">
+                                    <div class="search-wrap">
+                                        <input class="search-input" id="J_searchKeywords" type="text"
+                                               placeholder="请输入漫画标题"> <i class="icon-header-search"
+                                                                         id="J_searchBtn"></i>
+                                    </div>
+                                </div>
+                                <div class="user" id="J_userInfo">
+                                    <div class="face">
+                                        <a class="face-mask" href="javascript:;">
+                                            <img class="avator" src="/template/fense/images/visitor.png">
+                                        </a>
+                                    </div>
+                                </div>
+                                <ul class="book">
+                                    <li class="book-nav-item">
+                                        书架
+                                    </li>
+                                    <li class="book-nav-split">|</li>
+                                    <li class="book-nav-item" id="app">
+                                        历史
+                                    </li>
+                                </ul>
+                                <div class="download">
+                                    <a href="/" title="下载APP">下载APP</a>
+                                    <div class="download-inner">
+                                        <img class="qr-code" src="/template/fense/images/ma.png" alt="扫一扫 下载APP">
+                                        <p class="text">扫一扫 下载APP</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="block-float block-float-left">
+                            <h1 class="logo" title="{$site_name}">
+                                <a href="/" title="{$site_name}">
+                                    <img src="/template/fense/images/logo.png" class="icon-header-logo">
+                                </a>
+                            </h1>
+                            <ul class="nav-menu">
+                                <li class="nav-item" id="nav-index">
+                                    <a href="/" target="_self" title="首页">首页</a>
+                                </li>
+                                <li class="nav-item" id="nav-update">
+                                    <a href="/{$update_act}" target="_self" title="更新">更新</a>
+                                </li>
+                                <li class="nav-item" id="nav-hot">
+                                    <a href="/{$rank_ctrl}" target="_self" title="排行">排行</a>
+                                </li>
+                                <li class="nav-item" id="nav-list">
+                                    <a href="/{$booklist_act}" target="_self" title="分类">分类</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://lib.baomitu.com/vue/2.6.10/vue.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                books: [],
+            }
+        },
+        created: function () {
+            let value = localStorage.getItem('xwx_historys');
+            console.log(value)
+            if (value != undefined && value != null) {
+                let history = JSON.parse(value);
+                for (let i = 0; i < history.length; i++) {
+                    let item = localStorage.getItem(history[i]);
+                    if (item != undefined && item != null) {
+                        let bookInfo = JSON.parse(item); //拿到缓存对象
+                        this.books.push(bookInfo);
+                    }
+                }
+            }
+        }
+    })
+</script>
+{block name="content"}{/block}
+<div class="acgn-clearfix" style="width:100%">
+    <div class="acgn-col-24 acgn-col-space-none">
+        <div class="acgn-model acgn-model-footer">
+            <div class="block-content">
+                <ul class="link-list">
+                    <li class="link-item link">&nbsp;
+                    </li>
+                    <li class="link-item link">
+                        <a ref="nofollow" href="#" target="_blank" title="法律声明">法律声明</a>
+                    </li>
+                    <li class="link-item link">
+                        <a ref="nofollow" href="#" target="_blank" title="网站地图">网站地图</a>
+                    </li>
+                </ul>
+                <ul class="link-list">
+                    <li class="link-item link">
+                        <a ref="nofollow" href="#" target="_blank" title="关于我们">关于我们</a>
+                    </li>
+                    <li class="link-item link">
+                        <a ref="nofollow" href="#" target="_blank" title="帮助中心">帮助中心</a>
+                    </li>
+                    <li class="link-item link">
+                        <a ref="nofollow" href="#" title="加入我们">加入我们</a>
+                    </li>
+                </ul>
+                <ul class="link-list space-block-right">
+                    <li class="link-item link">
+                        <a ref="nofollow" href="#" target="_blank" title="版权合作">版权合作</a>
+                    </li>
+                    <li class="link-item link">
+                        <a ref="nofollow" href="#" target="_blank" title="投稿指南">投稿指南</a>
+                    </li>
+                    <li class="link-item link">
+                        <a ref="nofollow" href="#" target="_blank" title="用户协议">用户协议</a>
+                    </li>
+                </ul>
+                <div class="code-block">
+                    <img class="qr-code" src="/template/fense/images/ma.png" alt="下载客户端">
+                    <p class="text">
+                        下载客户端
+                    </p>
+                </div>
+                <div class="code-block">
+                    <img class="qr-code" src="/template/fense/images/ma.png" alt="关注微博">
+                    <p class="text">
+                        关注微博
+                    </p>
+                </div>
+                <div class="code-block">
+                    <img class="qr-code" src="/template/fense/images/ma.png" alt="关注微信">
+                    <p class="text">
+                        关注微信
+                    </p>
+                </div>
+                <ul class="link-list space-block-left">
+                    <li class="link-item">电话: 888888</li>
+                    <li class="link-item">Q Q: <a href="tencent://message/?uin=888888&amp;Site=&amp;Menu=yes"
+                                                  rel="nofollow">888888</a></li>
+                    <li class="link-item">邮箱: 888888@qq.com</li>
+                </ul>
+                <div class="block-split"></div>
+                <div class="block-bottom">
+                    <div class="bottom-split">
+                        <a ref="nofollow" href="http://beian.miit.gov.cn" target="_blank" title="ICP备案"
+                           class="acgn-dark">京ICP备000000号</a><br>
+                        Copyright © 2021 {$site_name}　版权所有　
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>$('#nav-index').addClass('active').prepend('<i class="icon-comm-berry"></i>');</script>
 </body>
 </html>
