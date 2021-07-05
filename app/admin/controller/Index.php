@@ -211,7 +211,7 @@ INFO;
             $client = new Client();
             $srcUrl = App::getRootPath() . "/ver.txt";
             $localVersion = (int)str_replace('.', '', file_get_contents($srcUrl));
-            $server = "https://cdn.jsdelivr.net/gh/hiliqi/zzz/";
+            $server = "https://cdn.jsdelivr.net/gh/hiliqi/xiaohuanxiong/";
             $serverFileUrl = $server . "/ver.txt";
             $res = $client->request('GET', $serverFileUrl); //读取版本号
             $serverVersion = (int)str_replace('.', '', $res->getBody());
@@ -219,7 +219,7 @@ INFO;
 
             if ($serverVersion > $localVersion) {
                 for ($i = $localVersion + 1; $i <= $serverVersion; $i++) {
-                    $res = $client->request('GET', "https://cdn.jsdelivr.net/gh/hiliqi/raccoon_up/comic6/" . $i . ".json");
+                    $res = $client->request('GET', "https://cdn.jsdelivr.net/gh/hiliqi/raccoon_up/comic5/" . $i . ".json");
                     if ((int)($res->getStatusCode()) == 200) {
                         $json = json_decode($res->getBody(), true);
 
@@ -252,8 +252,8 @@ INFO;
                     }
                 }
                 echo '<p style="padding-left:15px;font-weight: 400;color:#999;">升级完成</p>';
-                file_put_contents($srcUrl, (string)$res->getBody(), true); //将版本号写入到本地文件
-                echo '<p style="padding-left:15px;font-weight: 400;color:#999;">覆盖版本号</p>';
+//                file_put_contents($srcUrl, (string)$res->getBody(), true); //将版本号写入到本地文件
+//                echo '<p style="padding-left:15px;font-weight: 400;color:#999;">覆盖版本号</p>';
             } else {
                 echo '<p style="padding-left:15px;font-weight: 400;color:#999;">已经是最新版本！当前版本是' . $localVersion . '</p>';
             }
