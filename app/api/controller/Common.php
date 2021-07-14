@@ -5,15 +5,14 @@ namespace app\api\controller;
 
 
 use app\BaseController;
-use app\common\RedisHelper;
 use app\model\Book;
 use think\facade\Cache;
 use think\facade\App;
-use app\model\Clicks;
 use app\model\VipCode;
 use app\model\ChargeCode;
 use app\model\Admin;
 use think\facade\Db;
+use think\facade\Env;
 
 class Common extends BaseController
 {
