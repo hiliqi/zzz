@@ -1,0 +1,76 @@
+{extend name="./template/fense/pc/pub/base.html" /}
+{block name="seo"}
+<title>正在搜索{$keyword}-{$site_name}</title>
+<meta name="description" content="{$site_name}为大家带来最新漫画大全，这里有超多漫画资源，无论是韩国漫画，耽美漫画，还是恐怖漫画，总有一个让你酣畅淋漓">
+{/block}
+{block name="content"}
+<div class="acgn-container">
+    <div class="acgn-clearfix">
+        <div class="acgn-col-24 acgn-col-space-none">
+            <div class="acgn-page-content">
+                <div class="acgn-row">
+                    <div class="acgn-col-24 crumb J_crumb">
+                        <em>当前位置 :</em>
+                        <a href="/" title="{$site_name}">{$site_name}</a>&gt;
+                        <a href="/search}" title="漫画搜索">漫画搜索</a>&gt;
+                        搜索：“<font color=red>{$keyword}</font>” 相关漫画
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="acgn-row">
+        <div class="acgn-col-24">
+            <div class="acgn-tabs acgn-sort-content">
+                <div class="acgn-bd acgn-mb24">
+                    <div class="acgn-tabs-item">
+                        <ul class="acgn-comic-list sort-comic-list acgn-col6 acgn-clearfix">
+                            {raccoon:pagedbooks name="books" order="last_time desc" pagesize="12"}
+                            <li class="acgn-item mgr0">
+                                <a class="acgn-thumbnail" href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}" target="_blank">
+                                    <img class="cover" src="/template/fense/images/space.gif" alt="{$vo.book_name}" style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                                </a>
+                                <div class="acgn-info">
+                                    <h3 class="acgn-title">
+                                        <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}" target="_blank">{$vo.book_name}</a>
+                                    </h3>
+                                    <div class="acgn-desc">
+                                        <span class="new-topic">更至</span>
+                                        <a class="latest-cartoon" title="{$vo.last_chapter}"
+                                           href="/{$chapter_ctrl}/{$vo.last_chapter_id}" target="_blank">{$vo.last_chapter}</a>
+                                    </div>
+                                </div>
+                            </li>
+                            {/raccoon:pagedbooks}
+                        </ul>
+                        {if $page.last_page > 1}
+                        <div class="acgn-pages acgn-mb24 J_pages">
+                            {if $page.current_page == 1}
+                            <span class="acgn-prev"><i class="ift-left"></i></span>
+                            {else}
+                            <a class="acgn-next" href="/{$booklist_act}?page={$page.current_page-1}{$param}"><i class="ift-left"></i></a>
+                            {/if}
+
+                            {for start="1" end="$page.last_page + 1"}
+                            {if $i == $page.current_page }
+                            <a href="/{$booklist_act}?page={$i}{$param}" class="on">{$i}</a>
+                            {elseif ($i > $page.current_page - 4 && $i < $page.current_page + 5)/}
+                            <a href="/{$booklist_act}?page={$i}{$param}" title="第{$i}页">{$i}</a>
+                            {/if}
+                            {/for}
+
+                            {if $page.current_page == $page.last_page}
+                            <span class="acgn-prev"><i class="ift-right"></i></span>
+                            {else}
+                            <a class="acgn-next" href="/{$booklist_act}?page={$page.current_page+1}{$param}"><i class="ift-right"></i></a>
+                            {/if}
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

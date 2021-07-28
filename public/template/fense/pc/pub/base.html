@@ -6,18 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     {block name="seo"}{/block}
     <link rel="stylesheet" href="/static/component/layui/css/layui.css">
-    <script src="/static/component/layui/layui.all.js"></script>
-    <!-- //Mccms core JS build, must be loaded -->
-
-    <!-- This template needs to be built -->
     <link rel="shortcut icon" href="/template/fense/images/favicon.ico" type="image/x-icon"/>
     <link rel="Bookmark" href="/template/fense/images/favicon.ico"/>
     <link rel="stylesheet" href="/template/fense/css/css.css" type="text/css">
     <link rel="stylesheet" href="/template/fense/css/common.css" type="text/css">
     <link rel="stylesheet" href="/template/fense/css/index.css" type="text/css">
+    {block name="css"}{/block}
     <script src="https://lib.baomitu.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="/template/fense/js/jquery.lazyload.min.js"></script>
     <script src="/template/fense/js/index.js"></script>
+    <script src="/static/component/layui/layui.all.js"></script>
+    {block name="js"}{/block}
 </head>
 <body>
 <div class="acgn-clearfix" style="width:100%">
@@ -31,8 +30,8 @@
                                 <div class="search">
                                     <div class="search-wrap">
                                         <input class="search-input" id="J_searchKeywords" type="text"
-                                               placeholder="请输入漫画标题"> <i class="icon-header-search"
-                                                                         id="J_searchBtn"></i>
+                                               placeholder="请输入漫画标题">
+                                        <i class="icon-header-search" id="J_searchBtn"></i>
                                     </div>
                                 </div>
                                 <div class="user" id="J_userInfo">
@@ -185,6 +184,18 @@
         </div>
     </div>
 </div>
-<script>$('#nav-index').addClass('active').prepend('<i class="icon-comm-berry"></i>');</script>
+<script>
+    $('#nav-index').addClass('active').prepend('<i class="icon-comm-berry"></i>');
+    $('#J_searchBtn').click(function(){
+        let keyword = $('#J_searchKeywords').val()
+        location.href = '/search?keyword=' + keyword
+    });
+    //监听回车提交搜索
+    $(document).keyup(function(e){
+        if(e.keyCode == 13){
+            $('#J_searchBtn').click();
+        }
+    });
+</script>
 </body>
 </html>

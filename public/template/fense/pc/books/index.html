@@ -1,0 +1,346 @@
+{extend name="./template/fense/pc/pub/base.html" /}
+{block name="seo"}
+<title>{$book.book_name}全集免费高清无修在线阅读-{$site_name}</title>
+{/block}
+{block name="css"}
+<link rel="stylesheet" href="/template/fense/css/detail.css" type="text/css">
+{/block}
+{block name="js"}
+<script src="/template/fense/js/clipboard.min.js"></script>
+{/block}
+{block name="content"}
+<div class="acgn-container">
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div class="icon-detail-booklist-border"></div>
+            <div class="acgn-model-detail-frontcover acgn-clear acgn-model-detail-frontcover-0">
+                <div>
+                </div>
+                <div class="detail-cover">
+                    <img class="thumb" src="/template/fense/images/space.gif" title="{$book.book_name}" alt="{$book.book_name}" style="background: url('{$book.cover_url}') center center / cover no-repeat; opacity: 1;">
+                </div>
+                <div class="content">
+                    <h1 class="title" title="[comic_name]漫画">
+                        {$book.book_name}
+                        <span class="icon-detail-tags-active">
+                            <p class="detail-tags-active">独家</p>
+                        </span>
+                    </h1>
+                    <ul class="tags">
+                        {volist name="tags" id="vo"}
+                        <a href="/{$booklist_act}/?tag={$vo}" target="_blank">{$vo}</a>
+                        {/volist}
+                    </ul>
+                    <p class="sort">
+                        <span>
+                            总人气 &nbsp;<em class="num">{$book.hits}</em>
+                        </span>
+                        <span class="detail-weeksort">
+                            周人气 &nbsp;<em class="num">{$book.whits}</em>
+                        </span>
+                        <span class="detail-weeksort">
+                            日人气 &nbsp;<em class="num">{$book.dhits}</em>
+                        </span>
+                        <span class="detail-weeksort">
+                            作者 &nbsp;<em class="num">{$book.author.author_name}</em>
+                        </span>
+
+                    </p>
+                    <div class="desc" id="js_comciDesc">
+                        <p class="desc-content">
+                            <span class="desc-title">简介 ：</span>
+                            {$book.summary}
+                        </p>
+                    </div>
+                    <div class="action-btn">
+                        {if $book.is_copyright == 1}
+                        <a class="btn btn-read" href="/{$book.src_url}">
+                            <i class="icon-detail-head-collect"></i>
+                            <span class="txt">正版阅读</span>
+                            <div class="continue-des"></div>
+                        </a>
+                        {else /}
+                            {if $start > -1}
+                            <a class="btn btn-read" href="/{$chapter_ctrl}/{$start}">
+                                <i class="icon-detail-head-collect"></i>
+                                <span class="txt">开始阅读</span>
+                                <div class="continue-des"></div>
+                            </a>
+                            {else /}
+                            <a class="btn btn-read" href="#">
+                                <i class="icon-detail-head-collect"></i>
+                                <span class="txt">暂无章节</span>
+                                <div class="continue-des"></div>
+                            </a>
+                            {/if}
+                        {/if}
+
+                        <span class="btn btn-collect" id="addfavor">
+                            <i class="icon-detail-head-collect"></i>
+                            <span class="txt">收藏</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $('#addfavor').click(function () {
+            var val = $(this).attr('data-val');
+            $.post({
+                url:`/addfavor`,
+                data:{'book_id' : {$book.id}, 'val' : val },
+                success: function (res) {
+                    if (res.err == 1){
+                        layer.msg(res.msg);
+                    } else {
+                        if (res.isfavor == 1){ //表示收藏了，将控件状态改为已收藏
+                            $('span.txt').html('已收藏')
+                            layer.msg('收藏成功');
+                        } else { //更改为未收藏
+                            $('span.txt').html('收藏')
+                            layer.msg('取消收藏');
+                        }
+                    }
+                },
+            })
+        })
+    </script>
+    <div class="acgn-row">
+        <div class="acgn-col-17 acgn-col-space-middle acgn-col-row">
+            <div class="acgn-col-24 acgn-col-space-middle">
+                <div class="acgn-model-detail-chapter acgn-space-none acgn-model-detail-chapter-0" id="detail-chapter">
+                    <div class="hd">
+                        <h2 class="title" title="目录">目录</h2>
+                        <span class="update">
+                            {$book.last_time|date="Y-m-d"}&nbsp;&nbsp;&nbsp;&nbsp;更新至
+                            <a title="{$book.last_chapter}" class="last-update" href="/{$chapter_ctrl}/{$book.last_chapter_id}">
+                                <em>{$book.last_chapter}</em>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="bd">
+                        {if $book.is_copyright == 0}
+                        <ol class="chapter-list col-4 text" id="j_chapter_list">
+                            {raccoon:chapters name="chapters" where="book_id='$book->id'" order="chapter_order asc"}
+                            <li class="item">
+                                <a title="{$vo.chapter_name}" href="/{$chapter_ctrl}/{$vo.id}">
+                                    <div class="img">
+                                        <img style="height:auto;" src="" alt="{$vo.chapter_name}">
+                                        <i class="j_chapter_badge"></i>
+                                    </div>
+                                    <p class="name">
+                                        <i class="j_chapter_badge"></i>{$vo.chapter_name}</p>
+                                </a>
+                            </li>
+                            {/raccoon:chapters}
+                        </ol>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <div class="acgn-col-24 acgn-col-space-middle">
+                <div class="acgn-model acgn-model-detail-introduce acgn-space-none acgn-model-detail-introduce-0"></div>
+            </div>
+
+            <div class="acgn-col-24 acgn-col-space-middle">
+                <div id="recommend" class="acgn-model acgn-model-detail-recommend acgn-space-normal acgn-model-detail-recommend-0">
+                    <div class="model-head"><h3 class="title" title="猜你喜欢">猜你喜欢</h3></div>
+                    <div class="model-content">
+                        <div class="swiper-area swiper-area-auto">
+                            <div class="swiper-container">
+                                <div class="swiper-wrapper" style="width:100%; height: 391px;">
+                                    <div class="swiper-slide swiper-slide-duplicate">
+                                        <div class="brace-wrap">
+                                            <ul class="brace-x">
+                                                {raccoon:books name="books" where="tags like '%book->tags%' or area_id='$book->area_id'"
+                                                order="last_time desc" limit="4"}
+                                                <li class="size-cell">
+                                                    <div class="comic-cell pic-wave">
+                                                        <div class="adapt-ratio-3x4">
+                                                            <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}" class="pic adapt-inner">
+                                                                <img class="bg" src="{$vo.cover_url}" alt="{$vo.book_name}"></a>
+                                                        </div>
+                                                        <div class="info">
+                                                            <h3 title="{$vo.book_name}" class="name">
+                                                                <a href="/{$book_ctrl}/{$vo.param}" target="_self" title="{$vo.book_name}">
+                                                                    {$vo.book_name}
+                                                                </a>
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {/raccoon:books}
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>.comment-issue img{height: 32px;}</style>
+            <div class="acgn-col-24 acgn-col-space-middle">
+                <div id="comments" class="acgn-model acgn-model-detail-comment">
+                    <div class="model-head">
+                        <h3 class="comment-title title">粉丝留言</h3>
+                    </div>
+                    <div class="model-content">
+                        <div class="comment">
+                            <div class="comment-bd">
+                                <div class="comment-textarea-box">
+                                    <div class="comment-textarea-box-bd">
+                                        <textarea class="comment-textarea textarea-pl" maxlength="500" placeholder="有事没事说两句..."></textarea>
+                                        <span class="comment-input-num pl-input-num">0/500</span>
+                                    </div>
+                                    <div class="comment-textarea-box-ft">
+                                        <button class="comment-submit js_submit_comment js_submit_pl" type="button">吐槽一下</button>
+                                    </div>
+                                </div>
+                                <div class="comment-list-title-box" id="js_comment_list_title_box">
+                                    <ul class="comment-list-tabtitle">
+                                        <li class="comment-list-tabtitle-item comment-active">最新评论</li>
+                                    </ul>
+                                </div>
+                                <div class="comment-list-box" id="js_comment_list">
+                                    <ul class="comment-list comment-active" id="js_comment_hotest"></ul>
+                                </div>
+                                <div class="comment-noinfo" id="js_comment_noinfo">
+                                    <p style="padding: 70px;text-align: center;">评论加载中...</p>
+                                </div>
+                                <div class="comment-more-box" id="js_comment_more_box" style="display: none;">
+                                    <span id="js_comment_more" class="comment-more">查看更多</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="acgn-col-6 acgn-col-space-middle acgn-col-row acgn-col-offset-1">
+            <div class="acgn-col-24 acgn-col-space-middle">
+                <div class="acgn-model acgn-model-detail-rank acgn-space-none acgn-model-detail-rank-0">
+                    <div class="model-head">
+                        <h3 class="title">综合榜</h3>
+                        <div class="tab-area">
+                            <div class="tabs-underline">
+                                <div class="tab active" data-type="week">周<div class="line"></div></div>
+                                <div class="tab" data-type="month">月<div class="line"></div></div>
+                                <div class="tab" data-type="total">总<div class="line"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="model-content">
+                        <div class="area">
+                            <div class="block-container week active">
+                                <ul class="rank-list">
+                                    {raccoon:books name="books" order="whits desc" limit="30"}
+                                    <li class="rank-row{if:[comic:i] == 1} hover{end if}">
+                                        <div class="row-text">
+                                            <div class="rank-num icon-detail-sort-{i}">{$i}</div>
+                                            <p class="name-box">
+                                                <a href="/{$book_ctrl}/{$vo.param}" class="name" title="{$vo.book_name}" target="_blank">
+                                                    {$vo.book_name}
+                                                </a>
+                                            </p>
+                                            <div class="hot-num">{$vo.whits}<i class="icon-detail-fire"></i></div>
+                                        </div>
+                                        <div class="row-view">
+                                            <div>
+                                                <div class="adapt-box">
+                                                    <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}" target="_blank">
+                                                        <div class="pic">
+                                                            <img src="/template/fense/images/space.gif" class="view-img" alt="{$vo.book_name}" style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="des">
+                                                <span class="icon-detail_span icon-detail-sort-{$i}"><p class="detail-numtext">{if $i>3}{$i}{/if}</p></span>
+                                                <a href="/{$book_ctrl}/{$vo.param}" class="title" title="{$vo.book_name}" target="_blank">{$vo.book_name}</a>
+                                                <p class="desc">{$vo.summary|subtext=15}</p>
+                                                <div class="des-info"><div class="hot-num">{$vo.hits}<i class="icon-detail-fire"></i></div></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {/raccoon:books}
+                                </ul>
+                            </div>
+                            <div class="block-container month">
+                                <ul class="rank-list">
+                                    {raccoon:books name="books" order="mhits desc" limit="30"}
+                                    <li class="rank-row{if:[comic:i] == 1} hover{end if}">
+                                        <div class="row-text">
+                                            <div class="rank-num icon-detail-sort-{$i}">{$i}</div>
+                                            <p class="name-box">
+                                                <a href="/{$book_ctrl}/{$vo.param}" class="name" title="{$vo.book_name}" target="_blank">
+                                                    {$vo.book_name}
+                                                </a>
+                                            </p>
+                                            <div class="hot-num">{$vo.whits}<i class="icon-detail-fire"></i></div>
+                                        </div>
+                                        <div class="row-view">
+                                            <div>
+                                                <div class="adapt-box">
+                                                    <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}" target="_blank">
+                                                        <div class="pic">
+                                                            <img src="/template/fense/images/space.gif" class="view-img" alt="{$vo.book_name}" style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="des">
+                                                <span class="icon-detail_span icon-detail-sort-{$i}"><p class="detail-numtext">{if $i>3}{$i}{/if}</p></span>
+                                                <a href="/{$book_ctrl}/{$vo.param}" class="title" title="{$vo.book_name}" target="_blank">{$vo.book_name}</a>
+                                                <p class="desc">{$vo.summary|subtext=15}</p>
+                                                <div class="des-info"><div class="hot-num">{$vo.hits}<i class="icon-detail-fire"></i></div></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {/raccoon:books}
+                                </ul>
+                            </div>
+                            <div class="block-container total">
+                                <ul class="rank-list">
+                                    {raccoon:books name="books" order="hits desc" limit="30"}
+                                    <li class="rank-row{if:[comic:i] == 1} hover{end if}">
+                                        <div class="row-text">
+                                            <div class="rank-num icon-detail-sort-{$i}">{$i}</div>
+                                            <p class="name-box">
+                                                <a href="/{$book_ctrl}/{$vo.param}" class="name" title="{$vo.book_name}" target="_blank">
+                                                    {$vo.book_name}
+                                                </a>
+                                            </p>
+                                            <div class="hot-num">{$vo.whits}<i class="icon-detail-fire"></i></div>
+                                        </div>
+                                        <div class="row-view">
+                                            <div>
+                                                <div class="adapt-box">
+                                                    <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}" target="_blank">
+                                                        <div class="pic">
+                                                            <img src="/template/fense/images/space.gif" class="view-img" alt="{$vo.book_name}" style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="des">
+                                                <span class="icon-detail_span icon-detail-sort-{$i}"><p class="detail-numtext">{if $i>3}{$i}{/if}</p></span>
+                                                <a href="/{$book_ctrl}/{$vo.param}" class="title" title="{$vo.book_name}" target="_blank">{$vo.book_name}</a>
+                                                <p class="desc">{$vo.summary|subtext=15}</p>
+                                                <div class="des-info"><div class="hot-num">{$vo.hits}<i class="icon-detail-fire"></i></div></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {/raccoon:books}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
