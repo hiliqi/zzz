@@ -6,13 +6,15 @@ namespace app\api\controller;
 
 use app\BaseController;
 use app\model\Book;
+use app\model\Chapter;
 use think\facade\Cache;
 use think\facade\App;
 use app\model\VipCode;
 use app\model\ChargeCode;
-use app\model\Admin;
 use think\facade\Db;
 use think\facade\Env;
+use fengqi\Hanzi\Hanzi;
+
 
 class Common extends BaseController
 {
@@ -118,5 +120,38 @@ class Common extends BaseController
             sleep(1);
         }
         return json(['msg' => '成功生成充值码']);
+    }
+
+    public function hanziforb()
+    {
+        $start = input('start');
+        $last = input('last');
+        $map[] = ['id','>=',$start];
+        $map[] = ['id','<=',$last];
+        $books = Book::where($map)->select();
+        foreach ($books as &$book)
+        {
+            $book['book_name'] = Hanzi::turn($book['book_name'], true);
+            $book['summary'] = Hanzi::turn($book['summary'], true);
+            $book['tags'] =  Hanzi::turn($book['tags'], true);
+            $book['author_name'] =  Hanzi::turn($book['author_name'], true);
+            $book->save();
+        }
+        return 'ok';
+    }
+
+    public function hanziforc()
+    {
+        $start = input('start');
+        $last = input('last');
+        $map[] = ['id','>=',$start];
+        $map[] = ['id','<=',$last];
+        $chapters = Chapter::where($map)->select();
+        foreach($chapters as &$chapter)
+        {
+            $chapter['chapter_name'] = Hanzi::turn($chapter['chapter_name'], true);
+            $chapter->save();
+        }
+        return 'ok';
     }
 }

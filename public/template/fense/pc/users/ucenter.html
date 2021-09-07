@@ -1,0 +1,111 @@
+{extend name="./template/fense/pc/pub/ubase.html" /}
+{block name="seo"}
+<title>个人中心-{$site_name}</title>
+{/block}
+<!-- 内容 -->
+{block name="content"}
+<!-- 内容 -->
+<div class="main-container">
+    {include file="./template/fense/pc/pub/umenu.html"}
+    <!-- main-content -->
+    <div class="main-content--aside">
+        <div class="user-info">
+            <!-- avatar -->
+            <div class="user-info__avatar">
+                <img class="j-user-avatar" src="/static/images/mrtx.gif" />
+            </div>
+            <!-- 用户信息 -->
+            <div class="user-info__info">
+                <span class="j-user-name user-name"></span>
+                {$user.nick_name}
+                {if $day>0 }<i class="icon-vip-type2"></i>{/if}
+                <br/>
+                <span class="vip-info">VIP到期时间：
+                    <span class="j-user-vip-time">剩余 {$day} 天</span>
+                </span>
+                <a class="j-buy-btn vip-recharge" onclick="vip()">{if $day<=0}购买{else/}续费{/if}VIP</a>
+            </div>
+            <!-- 用户资金信息 -->
+            <div class="user-info__funds">
+                <div class="user-info__funds--item">
+                    <span class="user-info__funds--num j-user-gold"> {$balance}</span><br/>
+                    <span class="user-info__funds--text">金币</span>
+                    <i class="user-info__funds--icon icon-user-yb"></i>
+                </div>
+                <div class="user-info__funds--item">
+                    <span class="user-info__funds--num j-user-ticket">0</span><br>
+                    <span class="user-info__funds--text">点券</span>
+                    <i class="user-info__funds--icon icon-user-yp"></i>
+                    <a class="j-recharge-ticket-btn hide">购买</a>
+                </div>
+            </div>
+        </div>
+        <!-- tab -->
+        <div class="main-content__user-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this" data-type="1">金币</li>
+                <li data-type="2">推广</li>
+            </ul>
+            <div class="layui-tab-content tab-con">
+                <div class="layui-tab-item layui-show" id="item1">
+                    <div class="tab-con__balance">
+                        金币：<span class="j-user-gold">{$balance}</span>
+                    </div>
+                    <div class="j-buy-btn tab-con__btn j-pay-gold" onclick="charge()">充值</div>
+                </div>
+                <div class="layui-tab-item" id="item2">
+                    <div class="tab-con__balance">
+                        推广链接：<span class="j-user-gold" id="fo1">{$url}?pid={$xwx_user_id}</span>
+                    </div>
+                    <div class="j-buy-btn tab-con__btn j-pay-gold"  id="copy-btns">复制链接</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://lib.baomitu.com/clipboard-polyfill/2.8.6/clipboard-polyfill.js"></script>
+<script type="text/javascript">
+    $('#copy-btns').click(function () {
+        var text=$('#fo1').text();
+        clipboard.writeText(text).then(function(){
+            layer.msg('复制成功');
+        }, function(err){
+            layer.msg('复制失败');
+        });
+    })
+
+    //导航切换按钮
+    $('ul.layui-tab-title li').click(function (){
+        var type = $(this).attr('data-type');
+        if (type == 1)
+        {
+            $('#item1').addClass('layui-show')
+            $('#item2').removeClass('layui-show')
+        } else if (type == 2)
+        {
+            $('#item2').addClass('layui-show')
+            $('#item1').removeClass('layui-show')
+        }
+    })
+
+    function charge()
+    {
+        layer.open({
+            title: '充值',
+            type: 2,//很关键，只有type=2时，才会访问其他页面，否则以字符串的格式显示
+            content: '/charge',//问号后面向子页面传递参数，可以多个
+            area: ['1000px', '480px'],
+        });
+    }
+
+    function vip()
+    {
+        layer.open({
+            title: '购买vip',
+            type: 2,//很关键，只有type=2时，才会访问其他页面，否则以字符串的格式显示
+            content: '/vip',//问号后面向子页面传递参数，可以多个
+            area: ['1000px', '480px'],
+        });
+    }
+</script>
+{/block}

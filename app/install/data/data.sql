@@ -28,7 +28,7 @@ CREATE TABLE `{{$pk}}user`
     `mobile`          char(11)     DEFAULT '' COMMENT '会员手机号',
     `email`           char(32)     DEFAULT '' COMMENT '会员邮箱',
     `password`        char(32) NOT NULL,
-    `level`           int          default '1' COMMENT '1为游客，2为正式用户',
+    `level`           int          default '1' COMMENT '1为游客，2为正式用户,3为作者',
     `autopay`         tinyint(4) default 1 COMMENT '是否自动购买章节',
     `create_time`     int(10) unsigned DEFAULT '0',
     `update_time`     int(10) unsigned DEFAULT '0',
@@ -225,6 +225,20 @@ CREATE TABLE `{{$pk}}photo`
     KEY           `chapter_id` (`chapter_id`) USING BTREE,
     KEY           `pic_order` (`pic_order`) USING BTREE
 ) ENGINE=InnoDB;
+
+PARTITION BY RANGE COLUMNS(chapter_id) (
+    PARTITION p0 VALUES LESS THAN (100000),
+    PARTITION p1 VALUES LESS THAN (200000),
+    PARTITION p2 VALUES LESS THAN (300000),
+    PARTITION p3 VALUES LESS THAN (400000),
+    PARTITION p4 VALUES LESS THAN (500000),
+    PARTITION p5 VALUES LESS THAN (600000),
+    PARTITION p6 VALUES LESS THAN (700000),
+    PARTITION p7 VALUES LESS THAN (800000),
+    PARTITION p8 VALUES LESS THAN (900000),
+    PARTITION p9 VALUES LESS THAN (1000000),
+    PARTITION p10 VALUES LESS THAN MAXVALUE
+);
 
 -- ----------------------------
 -- Table structure for tags

@@ -1,0 +1,64 @@
+{extend name="./template/fense/pc/pub/ubase.html" /}
+{block name="seo"}
+<title>我的收藏-{$site_name}</title>
+{/block}
+{block name="content"}
+<!-- 内容 -->
+<div class="main-container">
+    {include file="./template/fense/pc/pub/umenu.html"}
+    <!-- main-content -->
+    <div class="main-content--aside">
+        <!-- title -->
+        <div class="main-content_title">
+            <h3>我的购买</h3>
+        </div>
+        <div class="main-content__buy">
+            <!-- comic-list -->
+            <div class="j-collection-list main-content__comic-list">
+                <ul class="user-comic-list--buy">
+                    {raccoon:buys name="buys" where="user_id='$xwx_user_id'"}
+                    <li class="user-comic-item" data-id="[comic:id]">
+                        <a class="user-comic-item__cover" href="/{$book_ctrl}/{$vo.book.param}" target="_blank">
+                            <img src="{$vo.book.cover_url}">
+                        </a>
+                        <div class="user-comic-item__detail">
+                            <div class="user-comic-item--name">
+                                <a class="text-overflow" href="/{$book_ctrl}/{$vo.book.param}" target="_blank"> {$vo.book.book_name}</a>
+                            </div>
+                            <div class="user-comic-item--latest text-overflow">更至：{$vo.book.last_chapter}</div>
+                            <div class="user-comic-item--text">更新时间：{$vo.book.last_time|date="Y-m-d"}</div>
+                        </div>
+                    </li>
+                    {/raccoon:buys}
+                    {if count($buys) <= 0}
+                    <div class="no-buy"></div>
+                    {/if}
+                </ul>
+            </div>
+            {if $page.last_page > 1}
+            <div class="acgn-pages acgn-mb24 J_pages">
+                {if $page.current_page == 1}
+                <span class="acgn-prev"><i class="ift-left"></i></span>
+                {else}
+                <a class="acgn-next" href="/buyhistory?page={$page.current_page-1}{$param}"><i class="ift-left"></i></a>
+                {/if}
+
+                {for start="1" end="$page.last_page + 1"}
+                {if $i == $page.current_page }
+                <a href="/buyhistory?page={$i}{$param}" class="on">{$i}</a>
+                {elseif ($i > $page.current_page - 4 && $i < $page.current_page + 5)/}
+                <a href="/buyhistory?page={$i}{$param}" title="第{$i}页">{$i}</a>
+                {/if}
+                {/for}
+
+                {if $page.current_page == $page.last_page}
+                <span class="acgn-prev"><i class="ift-right"></i></span>
+                {else}
+                <a class="acgn-next" href="/buyhistory?page={$page.current_page+1}{$param}"><i class="ift-right"></i></a>
+                {/if}
+            </div>
+            {/if}
+        </div>
+    </div>
+</div>
+{/block}

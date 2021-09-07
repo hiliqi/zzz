@@ -12,7 +12,7 @@ class Update extends Base
         $date = input('date');
         $day = input('day');
         if (empty($date)) {
-            $time = 0;
+            $time = strtotime(date('Y-m-d'));
         } else {
             $time = strtotime($date);
         }

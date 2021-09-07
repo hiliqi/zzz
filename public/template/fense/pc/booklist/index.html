@@ -41,7 +41,7 @@
                         <dd class="acgn-bd" id="end">
                             <a onclick="active(this)" data-val="-1" class="acgn-sort-attr {$end==-1?'acgn-active':''}" title="全部">全部</a>
                             <a onclick="active(this)" data-val="2" class="acgn-sort-attr {$end==2?'acgn-active':''}" title="连载漫画"><span>连载</span></a>
-                            <a onclick="active(this)" data-val="1" class="acgn-sort-attr {$end==2?'acgn-active':''}" title="完结漫画"><span>完结</span></a>
+                            <a onclick="active(this)" data-val="1" class="acgn-sort-attr {$end==1?'acgn-active':''}" title="完结漫画"><span>完结</span></a>
                         </dd>
                     </dl>
                 </div>
@@ -64,7 +64,7 @@
                 <div class="acgn-bd acgn-mb24">
                     <div class="acgn-tabs-item">
                         <ul class="acgn-comic-list sort-comic-list acgn-col6 acgn-clearfix">
-                            {raccoon:pagedbooks name="pagedBooks" pagesize="48" order="last_time desc"
+                            {raccoon:pagedbooks name="pagedBooks" pagesize="30" order="last_time desc"
                             where="tags like '%$cate%' and area_id='$area' and end='$end'"}
                             <li class="acgn-item">
                                 <a class="acgn-thumbnail" href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}" target="_blank">

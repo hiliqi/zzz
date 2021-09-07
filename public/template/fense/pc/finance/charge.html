@@ -1,0 +1,115 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <link rel="stylesheet" href="/static/component/layui/css/layui.css">
+    <script src="/static/component/layui/layui.all.js"></script>
+
+    <!-- This template needs to be built -->
+    <link rel="shortcut icon" href="/template/fense/images/favicon.ico" type="image/x-icon"/>
+    <link rel="Bookmark" href="/template/fense/images/favicon.ico"/>
+    <link rel="stylesheet" href="/template/fense/css/css.css" type="text/css">
+    <link rel="stylesheet" href="/template/fense/css/common.css" type="text/css">
+    <link rel="stylesheet" href="/template/fense/css/common_user.css">
+    <link rel="stylesheet" href="/template/fense/css/user.css">
+    <script src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div id="dialog-pay">
+    <div class="j-dialog-pay dialog-pay" lay-filter="dialog-pay">
+        <div class="j-pay-close dialog-pay_header--close"><i class="iconfont icon-ic_buy_toast_close"></i></div>
+        <!--tab-->
+        <div class="dialog-pay_body layui-tab layui-tab-brief layui-tab-mkz">
+            <!--tab-title-->
+            <div class="dialog-pay_body--tab-body">
+                <!--全部列表-->
+                <div class="j-tab-content">
+                    <div class="j-paytype-item">
+                        <div class="j-paytype-jb item_row hide" style="display: block;" >
+                            <h3 class="item--title"><i class="item--title-icon"></i>购买项目
+                                <span class="item--pay-tip">（充值比例：1元=1金币）</span>
+                            </h3>
+                            <ul class="item--content clearfix">
+                                {volist name="moneys" id="vo"}
+                                <li class="j-item-btn item--btn cion-btn" data-rmb="{$vo}">
+                                    <p>{$vo}金币</p>
+                                    <p class="item--price">￥{$vo}</p>
+                                    <i class="j-item-icon item--icon iconfont icon-ic_buylist_choose"
+                                       style="display: none"></i>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                    <!--支付方式-->
+                    <div class="item_row pay_hide">
+                        <h3 class="item--title"><i class="item--title-icon"></i>支付方式</h3>
+                        <ul class="item--content clearfix paytype-box">
+                            {volist name="payments" id="vo"}
+                            <li class="j-paytype-btn item--paytype-btn paytype-wxpay" data-pay-type="{$vo.code}">
+                                <i class="item--pay-icon iconfont icon-ic_buytoast_{$vo.img}"></i>{$vo.title}
+                                <i class="j-item-icon item--icon iconfont icon-ic_buylist_choose"
+                                   style="display: none"></i>
+                            </li>
+                            {/volist}
+                        </ul>
+                    </div>
+                    <!--应付金额-->
+                    <div class="item_row pay_hide"><span class="item--inline-title">应付金额：</span>
+                        <span
+                                class="item--found">
+                        <strong class="j-pay-num item--num"></strong>
+                        <em class="pay_ext">金币</em>
+                        </span>
+                    </div>
+                    <!--按钮-->
+                    <div class="item_row">
+                        <!--disabled-->
+                        <div class="j-pay-btn item_pay-btn layui-btn layui-btn-danger">确认支付</div>
+                    </div>
+                    <form id="charge_form" action="charge" method="post">
+                        <input type="hidden" name="money" id="money">
+                        <input type="hidden" name="code" id="code">
+                        <input type="hidden" name="pay_type" id="pay_type">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //金币充值
+    $('li.cion-btn').click(function () {
+        $(this).siblings().children('i').hide()
+        $(this).children('i').show()
+        $('.j-pay-num').text($(this).attr('data-rmb'))
+        $('#money').val($(this).attr('data-rmb'))
+        $('#pay_type').val(1)
+    })
+    //vip充值
+    $('li.vip-btn').click(function () {
+        $(this).siblings().children('i').hide()
+        $(this).children('i').show()
+        $('.j-pay-num').text($(this).attr('data-rmb'))
+        $('#money').val($(this).attr('data-rmb'))
+        $('#pay_type').val(1)
+    })
+    $('li.j-paytype-btn').click(function () {
+        $(this).siblings().children('i.icon-ic_buylist_choose').hide()
+        $(this).children('i.icon-ic_buylist_choose').show()
+        $('#code').val($(this).attr('data-pay-type'))
+        $('#pay_type').val(1)
+    })
+    $('div.j-pay-btn').click(function () {
+        if ($('#money').val() == '' || $('#money').val() == undefined) {
+            layer.msg('请选择金额')
+        } else if ($('#code').val() == '' || $('#code').val() == undefined) {
+            layer.msg('请选择支付方式')
+        } else {
+            $('#charge_form').submit()
+        }
+    })
+</script>
+</body>
+</html>

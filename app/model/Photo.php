@@ -4,6 +4,7 @@
 namespace app\model;
 
 
+use think\facade\Db;
 use think\Model;
 
 class Photo extends Model
@@ -16,14 +17,16 @@ class Photo extends Model
     {
         $img_domain = config('site.img_domain');
         if ($num == 0) {
-            $photos = Photo::where($where)->order($order)->select();
+            $photos = Db::name('photo')->where($where)->order($order)
+                ->partition(['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10'])->select();
         } else {
-            if (strlen($num) >= 3) {
+            if (strpos($num, ',') !== false) {
                 $arr = explode(',',$num);
-                $photos = Photo::where($where)
-                    ->limit($arr[0],$arr[1])->order($order)->select();
+                $photos = Db::name('photo')->where($where)->limit($arr[0],$arr[1])->order($order)
+                    ->partition(['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10'])->select();
             } else {
-                $photos = Photo::where($where)->limit($num)->order($order)->select();
+                $photos = Db::name('photo')->where($where)->limit($num)->order($order)
+                    ->partition(['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10'])->select();
             }
         }
 
@@ -41,7 +44,7 @@ class Photo extends Model
     public function getPagedPhotos($order, $where, $pagesize)
     {
         $img_domain = config('site.img_domain');
-        $data = Photo::where($where)->order($order)
+        $data = Db::name('photo')->where($where)->order($order)
             ->paginate([
                 'list_rows' => $pagesize,
                 'query' => request()->param(),
@@ -69,6 +72,7 @@ class Photo extends Model
 
     public function getLastPhoto($chapter_id)
     {
-        return Photo::where('chapter_id', '=', $chapter_id)->order('id', 'desc')->limit(1)->find();
+        return Db::name('photo')->where('chapter_id', '=', $chapter_id)->order('id', 'desc')
+            ->limit(1)->partition(['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10'])->findOrFail();
     }
 }

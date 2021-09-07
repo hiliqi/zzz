@@ -1,0 +1,90 @@
+{extend name="./template/fense/pc/pub/ubase.html" /}
+{block name="seo"}
+<title>修改资料-{$site_name}</title>
+{/block}
+<!-- 内容 -->
+{block name="content"}
+<body class="page-user">
+<!-- 内容 -->
+<div class="main-container">
+    {include file="./template/fense/pc/pub/umenu.html"}
+    <!-- main-content -->
+    <div class="main-content--aside">
+        <!-- title -->
+        <div class="main-content_title">
+            <h3>个人资料</h3>
+        </div>
+        <div class="main-content__profile clearfix">
+            <!-- left -->
+            <div class="main-content__profile--left">
+                <style type="text/css">
+                    .layui-form-label{width: 90px;}
+                    .layui-input-block{margin-left: 120px;}
+                    .layui-form-item .form__profile-input--city{width: 143px;}
+                </style>
+                <form class="layui-form">
+                    <!-- 昵称 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"><em class="label-required-symbol">*</em>昵称/笔名：</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" id="nick_name" lay-verify="required" value="{$user.nick_name}" />
+                        </div>
+                    </div>
+                    <!-- 邮箱 -->
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱：</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" name="email" value="{$user.email}" />
+                        </div>
+                    </div>
+                    <!-- 保存资料 -->
+                    <div class="layui-form-item layui-form-text">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-danger" id="btnsave" type="button">保存资料</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- right -->
+            <div class="main-content__profile--right">
+                <img class="j-user-avatar main-content__profile--avatar" src="/template/fense/images/visitor.png" />
+                <button class="j-change-avatar main-content__profile--right-btn layui-btn layui-btn-danger">修改头像</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btnsave').click(function () {
+        let nickname = filterStr($('#nick_name').val());
+        let email = $('#email').val()
+        if (nickname.length > 12){
+            layer.msg("昵称不能太长");
+            return;
+        }
+        $.post({
+            url:'/userinfo',
+            data:{nickname: nickname, email:email},
+            success:function (res) {
+                layer.msg(res.msg);
+                setTimeout(function () {
+                    location.reload();
+                },1000);
+            },
+            error:function (data) {
+                layer.msg(data);
+            }
+        })
+    })
+
+    function filterStr(str)
+    {
+        var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？%+_]");
+        var specialStr = "";
+        for(var i=0;i<str.length;i++)
+        {
+            specialStr += str.substr(i, 1).replace(pattern, '');
+        }
+        return specialStr;
+    }
+</script>
+{/block}

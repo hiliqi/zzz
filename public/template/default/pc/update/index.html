@@ -25,7 +25,7 @@
             $(this).children('.date').html(moment().subtract(day,'days').format('MMMDo').replace('星期','周'));
             $(this).click(function () {
                 var date = moment().subtract(day,'days').format('YYYY-MM-DD');
-                location.href = '/update?date=' + date + '&day=' + day;
+                location.href = '/{$update_act}?date=' + date + '&day=' + day;
             })
         })
     </script>
@@ -41,7 +41,7 @@
     <div class="box-body">
         <ul class="mh-list col7" id="update_30">
             {raccoon:pagedbooks name="pagedBooks" pagesize="28" order="last_time desc"
-            where="last_time>='$time'"}
+            where="last_time='$time'"}
             <li>
                 <div class="mh-item">
                     <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">

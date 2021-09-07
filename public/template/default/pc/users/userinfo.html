@@ -19,7 +19,13 @@
                     <div>
                         <label>昵称：</label>
                         <span>
-                            <input id="nick_name" type="text" value="{$xwx_nick_name}">
+                            <input id="nick_name" type="text" value="{$user.nick_name}">
+                        </span>
+                    </div>
+                    <div>
+                        <label>邮箱：</label>
+                        <span>
+                            <input id="email" type="text" value="{$user.email}">
                         </span>
                     </div>
                     <div class="mt20 text-center">
@@ -32,22 +38,23 @@
 </main>
 <script>
     $('#btnsave').click(function () {
-        var nickname = filterStr($('#nick_name').val());
+        let nickname = filterStr($('#nick_name').val());
+        let email = $('#email').val()
         if (nickname.length > 12){
-            ShowDialog("昵称不能太长");
+            layer.msg("昵称不能太长");
             return;
         }
         $.post({
             url:'/userinfo',
-            data:{nickname: nickname},
+            data:{nickname: nickname, email:email},
             success:function (res) {
-                ShowDialog(res.msg);
+                layer.msg(res.msg);
                 setTimeout(function () {
                     location.reload();
                 },1000);
             },
             error:function (data) {
-                ShowDialog(data);
+                layer.msg(data);
             }
         })
     })

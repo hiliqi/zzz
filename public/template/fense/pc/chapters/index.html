@@ -1,0 +1,369 @@
+{extend name="./template/fense/pc/pub/base.html" /}
+{block name="seo"}
+<title>{$chapter.book.book_name}-{$chapter.chapter_name}免费阅读-{$site_name}</title>
+<meta name="description" itemprop="description" content="当前阅读的是{$chapter.book.book_name}的{$chapter.chapter_name}">
+{/block}
+{block name="css"}
+<link rel="stylesheet" href="/template/fense/css/read.css" type="text/css">
+{/block}
+{block name="js"}
+<script src="/template/fense/js/clipboard.min.js"></script>
+{/block}
+{block name="content"}
+<div id="js_headMenu" class="read-header show">
+    <div class="acgn-container">
+        <div class="acgn-row">
+            <div class="acgn-col-24">
+                <div class="func-menu">
+                    <div class="hd-user">
+                        <div class="acgn-model-header acgn-model-header-0">
+                            <div class="user" id="J_userInfo" onclick="javascript:location.href='/ucenter'">
+                                <div class="face">
+                                    <span class="face-mask" href="javascript:;" target="_blank">
+                                        <img class="avator" src="/template/fense/images/visitor.png">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="hd-book">
+                        <li class="book-nav-item">
+                            <span id="bookshelfBtn" onclick="javascript:location.href='/bookshelf'">
+                                <i class="ift-shujiax"></i>书架
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="clumb-menu">
+                    <div class="hd-crumb">
+                        <div id="crumbLinks" class="hd-crumb-link">
+                            <a class="link" href="/">{$site_name}</a>
+                            <span class="arrow">&gt;</span>
+                            <a id="crumbComicLink" class="link" href="/{$chapter_ctrl}/{$chapter.id}"
+                               title="{$chapter.chapter_name}">
+                                {$chapter.chapter_name}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="chapter-title" id="js_headChapterName">{$chapter.chapter_name}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="js_guessSidebar" class="guess-sidebar">
+    <div id="sidebarMain" class="sidebar-main" style="right: 0px;">
+        <ul id="sidebarList" class="sidebar-list">
+            {raccoon:books name="books" order="last_time desc" limit="12"}
+            <li class="sidebar-item">
+                <a title="{$vo.book_name}" href="/{$book_ctrl}/{$vo.param}">
+                    <img class="link" src="/template/fense/images/space.gif" alt="{$vo.book_name}"
+                         style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                </a>
+                <h3 class="name">
+                    <a title="{$vo.book_name}" target="_blank" href="/{$book_ctrl}/{$vo.param}">{$vo.book_name}</a>
+                </h3>
+                <div class="floater">
+                    <h3 class="title">
+                        <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">{$vo.book_name}</a>
+                    </h3>
+                    <ul class="tags">
+                        {volist name="vo.tags" id="t"}
+                        <li><a href="/{$booklist_act}/?tag={$t}" target="_blank">{$t}</a></li>
+                        {/volist}
+                    </ul>
+                    <div class="hot"><span class="hot-num">人气&nbsp;&nbsp;{$vo.hits}</span></div>
+                    <div class="desc">{$vo.summary}</div>
+                </div>
+                <i class="triangle icon-triangle-cnxh"></i>
+            </li>
+            {/raccoon:books}
+        </ul>
+    </div>
+    <div id="js_guessSidebarBtn" class="sidebar-btn">
+        <span class="sidebar-btn-text">猜你喜欢</span>
+        <i class="sidebar-arrow ift-read-arrow-left"></i>
+        <i class="sidebar-arrow ift-read-arrow-right"></i>
+    </div>
+</div>
+<div id="readerContainer" class="acgn-container v">
+    <div class="acgn-reader-chapter__swiper-btns">
+        <i class="ift-left" id="jsPrev"></i>
+        <i class="ift-right" id="jsNext"></i>
+    </div>
+    <div class="acgn-reader-chapter" id="reader-scroll" style="width:800px;position:relative;">
+        <div class="acgn-reader-chapter__scroll-box">
+            <div class="acgn-reader-chapter__item-box">
+                {raccoon:photos name="photos" order="id asc" where="chapter_id='$chapter->id'"}
+                <div  style="width:auto"
+                     class="acgn-reader-chapter__item left pic-index-{$i} pic-box" data-pid="{$vo.id}"
+                     data-index="{$i}">
+                    <div class="acgn-reader-chapter__swiper-box">
+                        {$i}<img src="{$vo.img_url}" style="width:100%;">
+                    </div>
+                </div>
+                {/raccoon:photos}
+            </div>
+        </div>
+    </div>
+</div>
+<div class="read-footer-pannel show" id="js_footMenu">
+    <div class="inner">
+        <div class="left">
+            <div id="scaleFullscreenBtn" data-val="0" class="setting-btn btn-scale">
+                <b class="scale-border scale-left-top"></b>
+                <b class="scale-border scale-left-bottom"></b>
+                <b class="scale-border scale-right-top"></b>
+                <b class="scale-border scale-right-bottom"></b>
+                全屏
+            </div>
+            <div class="setting-btn setting-btn__scale btn-group">
+                <b id="scaleReduceBtn" class="reduce">-</b>
+                <span id="scaleStatusText" class="status">默认</span>
+                <b id="scaleAddBtn" class="add">+</b>
+            </div>
+        </div>
+        <div class="middle">
+            <div class="chapter-page-nav">
+                <div id="js_pageProgress" class="rd-progress" style="overflow: inherit;top: 6px;">
+                    <div class="rd-progress-cursor" style="left: 0%;">
+                        <i class="cursor"></i>
+                    </div>
+                </div>
+                {if $prev == "null"}
+                <div class="btn-media btn-prevChapter" style="color: lightgrey">
+                    <i class="ift-read-chapter-prev"></i>
+                    <div class="text">上一话</div>
+                </div>
+                {else/}
+                <div class="btn-media btn-prevChapter" onclick="javascript:location.href='/{$chapter_ctrl}/{$prev.id}'">
+                    <i class="ift-read-chapter-prev"></i>
+                    <div class="text">上一话</div>
+                </div>
+                {/if}
+
+                {if $next == "null"}
+                <div class="btn-media btn-nextChapter" style="color: lightgrey">
+                    <i class="ift-read-chapter-next"></i>
+                    <div class="text">下一话</div>
+                </div>
+                {else/}
+                <div class="btn-media btn-nextChapter" onclick="javascript:location.href='/{$chapter_ctrl}/{$next.id}'">
+                    <i class="ift-read-chapter-next"></i>
+                    <div class="text">下一话</div>
+                </div>
+                {/if}
+
+            </div>
+        </div>
+        <div class="right">
+            <div class="btn-mode-wrap">
+                <div class="btn-media" id="js_dayMode" style="display: none;">
+                    <i class="ift-read-sun"></i>
+                    <div class="text">日间模式</div>
+                </div>
+                <div class="btn-media" id="js_nightMode">
+                    <i class="ift-read-moon"></i>
+                    <div class="text">夜间模式</div>
+                </div>
+            </div>
+
+            <div class="btn-media btn-auto-scroll" id="js_ftAutoBtn">
+                <i class="ift-read-scroll-auto"></i>
+                <div class="text">自动滚动</div>
+            </div>
+            <div class="btn-media" id="js_btnCatalog">
+                <div id="js_text">
+                    <i class="ift-read-catalog"></i>
+                    <div class="text">章节目录</div>
+                </div>
+
+                <div class="chapter-catalog" id="js_chapterCatalog">
+                    <div id="crumbChapterList" class="list hd-chapter-selector">
+                        <div class="hd">章节目录</div>
+                        <div class="inner-main">
+                            <h3 class="inner-title">
+                                <div class="read-list">
+                                    <span>章节目录</span>
+                                    <div id="js_catalogBtn" class="sort">
+                                        <i class="icon-charpter-sort"></i>
+                                        <span id="js_catalogText">升序</span>
+                                    </div>
+                                </div>
+                            </h3>
+                            <ul id="js_catalogList" class="inner-select">
+                                {raccoon:chapters name="chapters" where="book_id='$chapter->book_id'" order="chapter_order asc"}
+                                <li>
+                                    <a href="/{$chapter_ctrl}/{$vo.id}" class="inner-title">
+                                        {$vo.chapter_name}
+                                    </a>
+                                </li>
+                                {/raccoon:chapters}
+                            </ul>
+                            <script class="rd-catalog-tpl" type="text/html">
+                                {raccoon:chapters name="chapters" where="book_id='$chapter->book_id'" order="chapter_order asc"}
+                                <li class="inner-option chapterid-{$vo.id}">
+                                    <a href="/{$chapter_ctrl}/{$vo.id}" class="btn">{$vo.chapter_name}</a>
+                                </li>
+                                {/raccoon:chapters}
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="display:none;" class="share-box">
+    <div id="dialogShareModel" class="acgn-gift-dialog layui-layer-wrap">
+        <div class="hd icon-comm-flower2"><h2 class="title">分享</h2><i class="icon-comm-close close"></i></div>
+        <div class="bd">
+            <div class="acgn-share" data-pic="[comic:pic]">
+                <ul class="sharebox acgn-clearfix">
+                    <li class="item" data-cmd="qq"><i class="icon-detail-qq"></i><span class="text">QQ</span></li>
+                    <li class="item" data-cmd="wechat"><i class="icon-detail-wechat"></i><span class="text">微信</span>
+                    </li>
+                    <li class="item" data-cmd="sina"><i class="icon-detail-weibo"></i><span class="text">微博</span></li>
+                    <li class="item" data-cmd="qzone"><i class="icon-detail-qzone"></i><span class="text">QQ空间</span>
+                    </li>
+                    <li class="item share-copy" data-clipboard-text="/{$chapter_ctrl}/{$chapter.id}">
+                        <i class="icon-detail-copy"></i><span class="text">复制链接</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#js_guessSidebarBtn').click(function(){
+        $('#js_guessSidebar').toggleClass('sidebar-show');
+    });
+    $('#sidebarList li').hover(function(){
+        $('#sidebarMain').css('right','-294px');
+    },function(){
+        $('#sidebarMain').css('right','0px');
+    })
+    //全屏
+    $('#scaleFullscreenBtn').click(function(){
+        var qp = $('#scaleFullscreenBtn').attr('data-val')
+        if(qp == 0){
+            $('#scaleFullscreenBtn').attr('data-val', 1)
+            FullScreen();
+        }else{
+            $('#scaleFullscreenBtn').attr('data-val', 0)
+            exitFullscreen();
+        }
+    });
+    //进入全屏
+    function FullScreen() {
+        var ele = document.documentElement;
+        if (ele .requestFullscreen) {
+            ele .requestFullscreen();
+        } else if (ele .mozRequestFullScreen) {
+            ele .mozRequestFullScreen();
+        } else if (ele .webkitRequestFullScreen) {
+            ele .webkitRequestFullScreen();
+        }
+    }
+    //退出全屏
+    function exitFullscreen() {
+        var de = document;
+        if (de.exitFullscreen) {
+            de.exitFullscreen();
+        } else if (de.mozCancelFullScreen) {
+            de.mozCancelFullScreen();
+        } else if (de.webkitCancelFullScreen) {
+            de.webkitCancelFullScreen();
+        }
+    }
+    $('#readerContainer').click(function ()
+    {
+        $('.read-header').toggleClass('show')
+        $('.read-footer-pannel').toggleClass('show')
+    })
+    //开关灯
+    $('#js_dayMode,#js_nightMode').click(function(){
+        if(!$('#readerContainer').hasClass('night')) {
+            $('#readerContainer').addClass('night');
+            $('#js_dayMode').hide();
+            $('#js_nightMode').show();
+        }else{
+            $('#readerContainer').removeClass('night');
+            $('#js_dayMode').show();
+            $('#js_nightMode').hide();
+        }
+    });
+    //自动滚动
+    $('#js_ftAutoBtn').click(function(){
+        if(!$(this).hasClass('disabled')) {
+            if(!$(this).hasClass('active')) {
+                $(this).addClass('active');
+                var top = $('#readerContainer').scrollTop();
+                gindex = setInterval(function(){
+                    top++;
+                    $('#readerContainer').scrollTop(top);
+                },20);
+            }else{
+                $(this).removeClass('active');
+                clearInterval(gindex);
+            }
+        }
+    });
+    $('#js_text').click(function() {
+      $('#js_chapterCatalog').toggleClass('show')
+    })
+    $('#js_catalogBtn').click(function() {
+        if($(this).hasClass('order-reverse')) {
+            $(this).removeClass('order-reverse');
+            $('#js_catalogText').html('升序');
+        } else {
+            $(this).addClass('order-reverse');
+            $('#js_catalogText').html('倒序');
+        }
+        var list = $('#js_catalogList');
+        list.append(list.find('li').get().reverse());
+    })
+    var bi=100
+    //图片宽度加减
+    $('#scaleReduceBtn').click(function(){
+        bi = bi-10;
+        if(bi < 50) bi = 50;
+        width = ((bi-100)/10*80)+800;
+        $('#reader-scroll').css('width',width+'px');
+        var txt = bi == 100 ? '默认' : bi+'%';
+        $('#scaleStatusText').html(txt);
+    });
+    $('#scaleAddBtn').click(function(){
+        bi = bi+10;
+        if(bi > 150) bi = 150;
+        width = ((bi-100)/10*80)+800;
+        $('#reader-scroll').css('width',width+'px');
+        var txt = bi == 100 ? '默认' : bi+'%';
+        $('#scaleStatusText').html(txt);
+    });
+
+    //--本地缓存代码开始--
+    let bookInfo = {
+        chapter_id: '{$chapter.id}',
+        end: "{$chapter.book.end == 1 ? '完结' : '连载'}",
+        chapter_name: '{$chapter.chapter_name}',
+        cover_url:'{$chapter.book.cover_url}',
+        book_id: '{$chapter.book_id}',
+        last_time: "{$chapter.book.last_time|date='Y-m-d'}",
+        book_name:'{$chapter.book.book_name}',
+        param: '{$chapter.book.param}'
+    };
+    localStorage.setItem('manhua_{$chapter.book_id}', JSON.stringify(bookInfo));//id为键，设置缓存
+    let history = [];
+    let value = localStorage.getItem('xwx_historys'); //读取参照数组
+    if (value != undefined && value != null) {
+        history = JSON.parse(value);
+    }
+    if (history.indexOf('manhua_{$chapter.book_id}') === -1) {
+        history.push('manhua_{$chapter.book_id}'); //把id为值存入参照数组
+    }
+
+    localStorage.setItem('xwx_historys', JSON.stringify(history));
+    //--本地缓存代码结束--
+</script>
+{/block}

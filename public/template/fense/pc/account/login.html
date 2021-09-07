@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>用户登录-{$site_name}</title>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+    <link rel="stylesheet" href="/static/component/layui/css/layui.css">
+    <link rel="shortcut icon" href="/template/fense/images/favicon.ico" type="image/x-icon"/>
+    <link rel="Bookmark" href="/template/fense/images/favicon.ico"/>
+    <link rel="stylesheet" href="/template/fense/css/css.css" type="text/css">
+    <link rel="stylesheet" href="/template/fense/css/common.css" type="text/css">
+    <link rel="stylesheet" href="/template/fense/css/common_home.css">
+    <link rel="stylesheet" href="/template/fense/css/login.css">
+    <script src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/template/fense/js/jquery.lazyload.min.js"></script>
+    <script src="/static/component/layui/layui.all.js"></script>
+</head>
+<body class="page-login fixed-footer">
+{include file="./template/fense/pc/pub/head.html"}
+<div class="main-content">
+    <div class="container--response">
+        <div class="login-box">
+            <div class="login-pic">
+                <img src="http://raccoon5.xyz/static/images/forgetpwd.jpg" style="max-width: 120%"/>
+            </div>
+            <!-- 登录框 -->
+            <div class="dialog-login">
+                <div class="dialog-login_content clearfix">
+                    <div class="tab-content">
+                        <!-- 登录 -->
+                        <div class="j-tab-item tab-item active">
+                            <div class="dialog-login_form">
+                                <div class="form-title">
+                                    <h3>用户登录</h3>
+                                    <span>没账号(>^ω^<)？</span>
+                                    <a href="/register" class="j-dialog-login-mode">快速注册></a>
+                                </div>
+                                <div class="form-item">
+                                    <div class="input-block">
+                                        <input id="logname" type="text" name="username" autocomplete="off" placeholder="用户名">
+                                    </div>
+                                </div>
+                                <div class="form-item">
+                                    <div class="input-block">
+                                        <input id="logpass" type="password" name="pass" placeholder="密码" autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="form-item piccode show">
+                                    <div class="input-block" style="position: relative;">
+                                        <input id="pcode" type="text" name="captcha" placeholder="输入验证码" autocomplete="off">
+                                        <img title="点击刷新验证码" style="position: absolute; right: 1px; top: 1px; width: 99px; height: 92%; cursor: pointer; display: inline-block;"
+                                             class="code_pic" src="/captcha">
+                                    </div>
+                                </div>
+                                <div class="form-item">
+                                    <div class="j-login-submit submit-btn disabled-select">登录</div>
+                                </div>
+                                <div class="form-item clearfix">
+                                    <div class="forgot-link disabled-select">
+                                        <a href="/recovery">忘记密码？</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 第三方登录 -->
+                    <div class="j-dialog-other-login other-login">
+                        <h3 class="j-dialog-other-title title">
+                            <div class="title-line"></div>
+                            <div class="title-text">其他登录方式</div>
+                        </h3>
+                        <div class="other-link">
+                            <a href="#" rel="nofollow" class="other-login-qq">
+                                <i class="iconfont layui-icon layui-icon-login-qq"></i>
+                            </a>
+                            <a href="#" rel="nofollow" class="other-login-wx">
+                                <i class="iconfont layui-icon layui-icon-login-wechat"></i>
+                            </a>
+                            <a href="#" rel="nofollow" class="other-login-sina">
+                                <i class="iconfont layui-icon layui-icon-login-weibo"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        var errhtml='<div class="j-verify-err"><i class="iconfont icon-ic-safe-off"></i><span>[msg]</span></div>';
+        //点击输入框删掉错误提示
+        $('.dialog-login_form input').click(function(){
+            $('.j-verify-err').remove();
+        });
+        //提交登陆
+        $('.j-login-submit').click(function(){
+            var name = $('#logname').val();
+            var pass = $('#logpass').val();
+            var code = $('#pcode').val();
+            if(name == ''){
+                var err = errhtml.replace('[msg]','主人，请输入账号~');
+                $('#logname').parent().parent().append(err);
+                $('#logname').focus();
+                return false;
+            }
+            if(!(/^[\S]{6,16}$/.test(pass))){
+                var err = errhtml.replace('[msg]','密码必须6到16位，且不能出现空格');
+                $('#logpass').parent().parent().append(err);
+                $('#logpass').focus();
+                return false;
+            }
+            if(code == ''){
+                var err = errhtml.replace('[msg]','主人，请输入验证码~');
+                $('#pcode').parent().parent().append(err);
+                $('#pcode').focus();
+                return false;
+            }
+            let r = Math.random()
+            $.ajax({
+                type: 'POST',
+                url: "/login",
+                data: {
+                    username:name,
+                    password:pass,
+                    captcha:code
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var result = data;
+                    if (result.err == 0){ //登录成功
+                        layer.msg(result.msg);
+                        setTimeout(function () {
+                            location.href = '/ucenter';
+                        }, 1000);
+                    } else {
+                        $('#captcha').attr('src','/captcha?rnd=' + r)
+                        layer.msg(result.msg);
+                    }
+                },
+                error: function (data) {
+                    $('#captcha').attr('src','/captcha?rnd=' + r)
+                    layer.msg(data.msg);
+                },
+            });
+        });
+        //监听回车提交登陆
+        $(document).keyup(function(e){
+            if(e.keyCode ==13){
+                $('.j-login-submit').click();
+            }
+        });
+        //刷新验证码
+        $('.code_pic').click(function(){
+            $(this).attr('src','/captcha?rnd='+Math.random());
+        });
+    });
+</script>
+{include file="./template/fense/pc/pub/foot.html"}
+</body>
+</html>

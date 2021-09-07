@@ -136,7 +136,7 @@
         })
 
         $("#book_del").click(function () {
-            var arr = $('span.edit-state.active');
+            let arr = $('span.edit-state.active');
             if (arr.length > 0) {
                 $(arr).map(function () {
                     localStorage.removeItem('manhua_' + $(this).attr('mid'));

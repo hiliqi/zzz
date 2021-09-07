@@ -1,0 +1,143 @@
+{extend name="./template/fense/pc/pub/ubase.html" /}
+{block name="seo"}
+<title>阅读历史-{$site_name}</title>
+{/block}
+<!-- 内容 -->
+{block name="content"}
+<div class="main-container" id="app">
+  {include file="./template/fense/pc/pub/umenu.html"}
+  <!-- main-content -->
+  <div class="main-content--aside">
+    <!-- title -->
+    <div class="main-content_title">
+      <h3>阅读记录</h3>
+      <!-- toolbox -->
+      <div class="main-content__title--toolbox">
+        <div class="j-collection-toolbox clear-btn">
+          <i class="iconfont icon-clearlist"></i> 整理阅读
+        </div>
+        <div class="j-collection-feature toolbox-btn layui-form hide">
+          <div class="layui-input-block">
+            <input type="checkbox" name="select-all" lay-skin="primary" lay-filter="select-all" title="全选">
+          </div>
+          <div class="btn-group">
+            <span class="j-collection-delete delete-btn">删除阅读</span>
+            <span class="j-collection-cancel cancel-btn">取消</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- comic-list -->
+    <div class="j-collection-list main-content__comic-list">
+      <ul class="user-comic-list">
+        <li class="user-comic-item" v-for="(item, index) in books" :key="index">
+          <div class="j-item-select user-comic-item__select" v-bind:data-id="item.book_id">
+            <i class="pic-select"></i>
+          </div>
+          <a class="user-comic-item__cover" :href="'/{$book_ctrl}/' + item.param" target="_blank">
+            <img :src="item.cover_url">
+          </a>
+          <div class="user-comic-item__detail">
+            <p class="user-comic-item--name">
+              <a class="text-overflow" :href="'/{$book_ctrl}/' + item.param" target="_blank">{{item.book_name}}</a>
+            </p>
+            <p class="user-comic-item--text user-comic-item--latest">
+              <a class="text-overflow--gray" :href="'/{$chapter_ctrl}/' + item.last_chapter_id" target="_blank">
+                更新时间：{{item.last_time}}
+              </a>
+            </p>
+          </div>
+        </li>
+        <div class="no-history" v-if="books.length == 0"></div>
+      </ul>
+    </div>
+
+  </div>
+</div>
+<script src="https://lib.baomitu.com/vue/2.6.10/vue.min.js"></script>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        books: [],
+      }
+    },
+    created: function () {
+      let value = localStorage.getItem('xwx_historys');
+      if (value != undefined && value != null) {
+        let history = JSON.parse(value);
+        for (let i = 0; i < history.length; i++) {
+          let item = localStorage.getItem(history[i]);
+          if (item != undefined && item != null ) {
+            let bookInfo = JSON.parse(item); //拿到缓存对象
+            this.books.push(bookInfo);
+          }
+        }
+      }
+    }
+  })
+</script>
+<script>
+  //整理收藏
+  $('.clear-btn').click(function(){
+    $('.toolbox-btn,.j-item-select').show();
+    $(this).hide();
+  });
+  //整理收藏
+  $('.cancel-btn').click(function(){
+    $('.toolbox-btn,.j-item-select').hide();
+    $('.clear-btn').show();
+  });
+  layui.form.on('checkbox(select-all)', function(data){
+    if (data.elem.checked) {
+      $(data.elem).attr('checked', true);
+      $('.j-collection-list').find('.j-item-select').addClass('user-comic-item--selected').show();
+    } else {
+      $(data.elem).attr('checked', false);
+      $('.j-collection-list').find('.j-item-select').removeClass('user-comic-item--selected');
+    }
+  });
+  //单选
+  $('.j-item-select').click(function(){
+    if($(this).hasClass('user-comic-item--selected')) {
+      $(this).removeClass('user-comic-item--selected');
+    }else{
+      $(this).addClass('user-comic-item--selected').show();
+    }
+  });
+  //删除事件
+  $('.j-collection-delete').click(function() {
+    // 如果禁用状态则不处理
+    layer.open({
+      content: '亲，确定要删除吗？',
+      btn: ['确定', '取消'],
+      yes: function (index) {
+        let arr = $('.user-comic-item--selected')
+        if (arr.length > 0) {
+          $(arr).map(function () {
+            localStorage.removeItem('manhua_' + $(this).attr('data-id'));
+            let value = localStorage.getItem('xwx_historys');
+            if (value === undefined || value === null) {
+
+            } else {
+              let history = JSON.parse(value);
+              for (let i = 0; i < history.length; i++) {
+                if (history[i] === 'manhua_' + $(this).attr('data-id')){
+                  history.slice(i, 1);
+                }
+              }
+              localStorage.setItem('xwx_historys', JSON.stringify(history));
+            }
+          });
+        } else {
+          layer.msg("请选择要删除的收藏或历史记录");
+        }
+        // setTimeout(function () {
+        //   location.reload();
+        // },2);
+      }
+    });
+  })
+</script>
+{/block}

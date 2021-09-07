@@ -6,11 +6,20 @@
     'aliases' => 
     array (
     ),
-    'reference' => '6e9eeb550c47742d2e21eca0f1f79e284842eb79',
+    'reference' => 'de22f5987f0dd16f3bfafc6d01c0e4e77cb35749',
     'name' => 'topthink/think',
   ),
   'versions' => 
   array (
+    'fengqi/hanzi' => 
+    array (
+      'pretty_version' => 'v0.1.3',
+      'version' => '0.1.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '42f23f129064e2788509531f78304cf4071de226',
+    ),
     'firebase/php-jwt' => 
     array (
       'pretty_version' => 'v5.4.0',
@@ -287,7 +296,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '6e9eeb550c47742d2e21eca0f1f79e284842eb79',
+      'reference' => 'de22f5987f0dd16f3bfafc6d01c0e4e77cb35749',
     ),
     'topthink/think-captcha' => 
     array (

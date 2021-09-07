@@ -8,6 +8,6 @@ return [
     'salt' => 'hanmantai',
     'api_key' => 'hahmh', 
     'app_key' => 'clwlxw',
-    'tpl' => 'fense',
+    'tpl' => 'default',
     'appupdate' => ''
  ];

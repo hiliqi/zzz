@@ -1,0 +1,154 @@
+{extend name="./template/fense/pc/pub/base.html" /}
+{block name="seo"}
+<title>漫画排行榜-{$site_name}</title>
+{/block}
+{block name="css"}
+<link rel="stylesheet" href="/template/fense/css/rank.css" type="text/css">
+{/block}
+{block name="content"}
+<div class="acgn-container">
+    <div class="acgn-clearfix">
+        <div class="acgn-col-24 acgn-col-space-none">
+            <div class="acgn-page-content">
+                <div class="acgn-row">
+                    <div class="acgn-col-24 crumb J_crumb">
+                        <em>当前位置 :</em>
+                        <a href="/" title="{$site_name}">{$site_name}</a>&gt;
+                        <a href="/{$update_act}" title="漫画排行榜">漫画排行榜</a>&gt;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div class="acgn-rank-header-link">
+                <ul class="acgn-rank-list acgn-clearfix">
+                    <li class="item active">
+                        <a onclick="tab(this, 'comic-sort-list1')" title="漫画新作榜">新作榜</a>
+                    </li>
+                    <li class="item">
+                        <a onclick="tab(this, 'comic-sort-list2')" href="javascript:void(0);" title="漫画免费榜">人气榜</a>
+                    </li>
+                    <li class="item">
+                        <a onclick="tab(this, 'comic-sort-list3')" href="javascript:void(0);" title="漫画完结榜">完结榜</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <ul id="comic-sort-list1" class="comic-sort-list acgn-col4 acgn-comic-list">
+                {raccoon:books name="books" order="last_time desc" limit="30"}
+                <li class="acgn-item comic-item acgn-clearfix">
+                    <a class="acgn-thumbnail" href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">
+                        <img class="cover" src="/template/fense/images/space.gif"
+                             alt="{$vo.book_name}" style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                        <div class="wave-container">
+                            <div class="order-by">
+                                <i class="icon-hot"></i>
+                                <span>{$vo.hits}人气</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="acgn-info">
+                        <h3 class="comic-name acgn-title">
+                            <a href="/{$book_ctrl}/{$vo.param}" target="_blank" title="{$vo.book_name}">
+                                {if $i < 4}
+                                <span class="sort-img">
+                                    <img class="sort-img-cont" style="position:absolute;z-index:-1" src="/template/fense/images/rank-sort.png">
+                                    {$i}
+                                </span>
+                                {else/}
+                                {$i}
+                                {/if}
+                                {$vo.book_name}
+                            </a>
+                        </h3>
+                        <div class="comic-desc acgn-desc">
+                            <p>{$vo.summary|subtext=12}</p>
+                        </div>
+                    </div>
+                </li>
+                {/raccoon:books}
+            </ul>
+            <ul id="comic-sort-list2" class="comic-sort-list acgn-col4 acgn-comic-list" style="display: none;">
+                {raccoon:books name="books" order="hits desc" limit="30"}
+                <li class="acgn-item comic-item acgn-clearfix">
+                    <a class="acgn-thumbnail" href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">
+                        <img class="cover" src="/template/fense/images/space.gif"
+                             alt="{$vo.book_name}" style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                        <div class="wave-container">
+                            <div class="order-by">
+                                <i class="icon-hot"></i>
+                                <span>{$vo.hits}人气</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="acgn-info">
+                        <h3 class="comic-name acgn-title">
+                            <a href="/{$book_ctrl}/{$vo.param}" target="_blank" title="{$vo.book_name}">
+                                {if $i < 4}
+                                <span class="sort-img">
+                                    <img class="sort-img-cont" style="position:absolute;z-index:-1" src="/template/fense/images/rank-sort.png">
+                                    {$i}
+                                </span>
+                                {else/}
+                                {$i}
+                                {/if}
+                                {$vo.book_name}
+                            </a>
+                        </h3>
+                        <div class="comic-desc acgn-desc">
+                            <p>{$vo.summary|subtext=12}</p>
+                        </div>
+                    </div>
+                </li>
+                {/raccoon:books}
+            </ul>
+            <ul id="comic-sort-list3" class="comic-sort-list acgn-col4 acgn-comic-list" style="display: none;">
+                {raccoon:books name="books" order="last_time desc" where="end=1" limit="30"}
+                <li class="acgn-item comic-item acgn-clearfix">
+                    <a class="acgn-thumbnail" href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">
+                        <img class="cover" src="/template/fense/images/space.gif"
+                             alt="{$vo.book_name}" style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                        <div class="wave-container">
+                            <div class="order-by">
+                                <i class="icon-hot"></i>
+                                <span>{$vo.hits}人气</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="acgn-info">
+                        <h3 class="comic-name acgn-title">
+                            <a href="/{$book_ctrl}/{$vo.param}" target="_blank" title="{$vo.book_name}">
+                                {if $i < 4}
+                                <span class="sort-img">
+                                    <img class="sort-img-cont" style="position:absolute;z-index:-1" src="/template/fense/images/rank-sort.png">
+                                    {$i}
+                                </span>
+                                {else/}
+                                {$i}
+                                {/if}
+                                {$vo.book_name}
+                            </a>
+                        </h3>
+                        <div class="comic-desc acgn-desc">
+                            <p>{$vo.summary|subtext=12}</p>
+                        </div>
+                    </div>
+                </li>
+                {/raccoon:books}
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    function tab(obj, id){
+        $(obj).parent('li').siblings().removeClass('active')
+        $(obj).parent('li').addClass('active')
+        var ul = document.getElementById(id)
+        $(ul).siblings().hide()
+        $(ul).show()
+    }
+</script>
+{/block}

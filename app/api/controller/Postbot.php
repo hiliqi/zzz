@@ -35,7 +35,7 @@ class Postbot
                 $book->unique_id = $this->convert($data['book_name']) . md5(time() . mt_rand(1, 1000000));
                 //$book->unique_id = $data['unique_id'];
                 $book->author_id = $author->id;
-                $book->author_name = $data['author'] ?: '侠名';
+                $book->author_name = $data['author'] ?: '佚名';
                 $book->area_id = trim($data['area_id']);
                 $book->book_name = trim($data['book_name']);
                 if (!empty($data['nick_name']) || !is_null($data['nick_name'])) {
@@ -43,8 +43,8 @@ class Postbot
                 }
                 $book->tags = trim($data['tags']);
                 $book->end = trim($data['end']);
-                $book->start_pay = trim($data['start_pay']);
-                $book->money = trim($data['money']);
+                $book->start_pay = 9999;
+                $book->money = 0;
                 $book->cover_url = trim($data['cover_url']);
                 $book->summary = trim($data['summary']);
                 $book->last_time = time();

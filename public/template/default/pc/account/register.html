@@ -111,11 +111,11 @@
     }
 
     function register() {
-        var regpwd = new RegExp("^[0-9A-Za-z\\-=\\[\\];,./~!@#$%^*()_+}{:?]{6,21}$");
-        var $username = $("#txt_username");
-        var $pwd = $("#txt_password");
-        var $pwd1 = $("#txt_password2");
-        var r = Math.random()
+        let regpwd = new RegExp("^[0-9A-Za-z\\-=\\[\\];,./~!@#$%^*()_+}{:?]{6,21}$");
+        let $username = $("#txt_username");
+        let $pwd = $("#txt_password");
+        let $pwd1 = $("#txt_password2");
+        let r = Math.random()
         if (!$username || $.trim($username.val()) === "") {
             ShowDialog("必须填写用户名");
             $username.focus().css({ outlineWidth: 1, outlineColor: "#fd113a" });

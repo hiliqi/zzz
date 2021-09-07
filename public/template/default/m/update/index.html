@@ -14,7 +14,7 @@
     <div class="manga-list" style="border:none;background-color:#f8f8f8;margin-top: 100px;">
         <ul id="updatedb0" class="manga-list-2">
             {raccoon:pagedbooks name="pagedBooks" pagesize="28" order="last_time desc"
-            where="last_time>='$time'"}
+            where="last_time='$time'"}
             <li>
                 <div class="manga-list-2-cover">
                     <a href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">

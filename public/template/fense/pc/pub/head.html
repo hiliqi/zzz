@@ -9,153 +9,27 @@
                                 <div class="search">
                                     <div class="search-wrap">
                                         <input class="search-input" id="J_searchKeywords" type="text"
-                                               placeholder="请输入漫画标题"> <i class="icon-header-search"
-                                                                         id="J_searchBtn"></i>
-                                    </div>
-                                    <div class="search-inner" id="J_searchContent">
-                                        <i class="icon-comm-flower1"></i>
-                                        <div class="search-inner-main">
-                                            <div class="search-hot">
-                                                <h3 class="search-title" id="J_hotSearchTitle">热门搜索</h3>
-                                                <p class="search-no-info acgn-hide acgn-tac" id="J_noHotSearch">
-                                                    没有搜索到结果</p>
-                                                <ul class="search-list" id="J_hotSearch">
-                                                    <script class="hot-search-tpl" type="text/html">
-                                                        {volist name="hot_search" id="vo"}
-                                                        <li class="js_hot_list search-item{ $i == 0 ? ' active' : '' }">
-                                                            <a href="/{$search_ctrl}?keyword={$vo}" class="item-text">
-                                                                <div class="mask mask-{ $i + 1 }">{ $i + 1 }</div>
-                                                                <p class="name imp">{ $vo }</p>
-                                                            </a>
-                                                        </li>
-                                                        {/volist}
-                                                    </script>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                               placeholder="请输入漫画标题">
+                                        <i class="icon-header-search" id="J_searchBtn"></i>
                                     </div>
                                 </div>
-                                <div class="user" id="J_userInfo">
+                                <div style="display: inline-block;width: 150px;position: relative;height: 30px;top: 12px;">
+                                    <a title="去作者中心" href="/author.php" style="position: absolute;width: 100px;height: 35px;line-height: 35px;display: block;color: #fff;font-size: 14px;background: #2ccc9c;text-align: center;border-radius: 20px;top: 0;left: 0;">作者中心</a>
+                                </div>
+                                <div class="user" id="J_userInfo" onclick="javascript:location.href='/ucenter'">
                                     <div class="face">
-                                        <a class="face-mask" href="javascript:;"><img class="avator"
-                                                                                      src="/template/fense/images/visitor.png"></a>
-                                        <div class="user-inner header-mask">
-                                            <i class="icon-header-flower"></i>
-                                            <div class="user-inner-main header-mask-contain">
-                                                <div class="header-mask-offset">
-                                                    <div class="header-mask-inner">
-                                                        <h3 class="name">游客</h3>
-                                                        <table class="assets">
-                                                            <tbody>
-                                                            <tr>
-                                                                <td class="asset" id="J_coins">
-                                                                    <i class="mask icon-header-coins"></i>
-                                                                    <span href="javascript:;" class="num"
-                                                                          target="_blank">金币 0</span>
-                                                                </td>
-                                                                <td class="asset" id="J_ticket">
-                                                                    <i class="mask icon-header-ticket"></i>
-                                                                    <span href="javascript:;" class="num"
-                                                                          target="_blank">月票 0</span>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <div class="status">
-                                                            <div class="status-login">
-                                                                <div class="login-btn" id="J_layerlogin">
-                                                                    <i class="login-bg icon-header-btn-login">登录</i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <a class="face-mask" href="javascript:;">
+                                            <img class="avator" src="/template/fense/images/visitor.png">
+                                        </a>
                                     </div>
                                 </div>
                                 <ul class="book">
-                                    <li class="book-nav-item">
+                                    <li class="book-nav-item" onclick="javascript:location.href='/bookshelf'">
                                         书架
-                                        <div class="book-nav-item-bd">
-                                            <i class="icon-comm-flower1"></i>
-                                            {if $xwx_user_id == null}
-                                            <div class="book-none" id="J_bookNone">
-                                                <img class="mascot" src="/template/fense/images/mascot-fish.png"
-                                                     alt="收藏漫画">
-                                                <p class="explain">宝宝,不收藏漫画怎么追更呢~</p>
-                                                <a class="link" href="/{$booklist_act}" target="_blank" title="漫画分类">去找找漫画</a>
-                                            </div>
-                                            {else /}
-                                            <div class="book-main" id="J_bookshelfBox">
-                                                <ul class="book-list shelf" id="J_bookshelfList">
-                                                    <script class="fav-tpl" type="text/html">
-                                                        {raccoon:favors name="favors" where="user_id='$xwx_user_id'"}
-                                                        <li class="book-item ">
-                                                            <a class="img acgn-cursor"
-                                                               href="/{$book_ctrl}/{$vo.book.param}" target="_blank">
-                                                                <img class="img" src="/template/fense/images/space.gif"
-                                                                     style="background: url('{{ item.pic}}') center center / cover no-repeat; opacity: 1;">
-                                                            </a>
-                                                            <div class="desc-box">
-                                                                <h4 class="title">
-                                                                    <a class="desc"
-                                                                       href="/{$book_ctrl}/{$vo.book.param}"
-                                                                       target="_blank">{$vo.book.book_name}</a>
-                                                                </h4>
-                                                                <a class="info"
-                                                                   href="/{$chapter_ctrl}/{$vo.last_chapter_id}"
-                                                                   target="_blank">
-                                                                    <span class="info-content ">更至: {$vo.last_chapter}</span>
-                                                                </a>
-                                                            </div>
-                                                        </li>
-                                                        {/raccoon:favors}
-                                                    </script>
-                                                </ul>
-                                                <div class="book-count">
-                                                    <a href="/bookshelf" class="all acgn-cursor">查看收藏</a>
-                                                </div>
-                                            </div>
-                                            {/if}
-                                        </div>
                                     </li>
                                     <li class="book-nav-split">|</li>
-                                    <li class="book-nav-item" id="app">
+                                    <li class="book-nav-item" onclick="javascript:location.href='/history'">
                                         历史
-                                        <div class="book-nav-item-bd">
-                                            <i class="icon-comm-flower1"></i>
-                                            <div class="book-none" id="J_historyNone" v-if="books.length=0">
-                                                <img class="mascot" src="/template/fense/images/mascot-fish.png"
-                                                     alt="阅读漫画">
-                                                <p class="explain">呜呜~宝宝都没有阅读过漫画诶~</p>
-                                            </div>
-                                            <div class="book-main" id="J_historyListBox" v-if="books.length>0">
-                                                <ul class="book-list" id="J_historyList">
-                                                    <script class="history-tpl" type="text/html">
-                                                        <li class="book-item" v-for="(item, index) in books" :key="index">
-                                                            <a class="img acgn-cursor" :href="'/{$book_ctrl}/' + item.param"
-                                                               target="_blank">
-                                                                <img class="img" src="/template/fense/images/space.gif"
-                                                                     :style="{'background-image': 'url(' + item.cover_url + ') center center / cover no-repeat; opacity: 1;'}">
-                                                            </a>
-                                                            <div class="desc-box">
-                                                                <h4 class="title">
-                                                                    <a class="desc" :href="'/{$book_ctrl}/' + item.param" target="_blank">
-                                                                        {{item.book_name}}
-                                                                    </a>
-                                                                </h4>
-                                                                <a class="info" :href="'/{$chapter_ctrl}/' + item.chapter_id"
-                                                                   target="_blank">
-                                                                    <span class="info-content more-content">{{item.chapter_name}}</span>
-                                                                </a>
-                                                            </div>
-                                                        </li>
-                                                    </script>
-                                                </ul>
-                                                <div class="book-count"><a class="all acgn-cursor" href="/history">全部历史记录</a></div>
-                                            </div>
-                                        </div>
                                     </li>
                                 </ul>
                                 <div class="download">
@@ -194,6 +68,7 @@
         </div>
     </div>
 </div>
+<script src="https://lib.baomitu.com/vue/2.6.10/vue.min.js"></script>
 <script>
     new Vue({
         el: '#app',
@@ -217,4 +92,25 @@
             }
         }
     })
+    var url = self.location.href;
+    if (url.indexOf("update") != -1){
+        $('#nav-update').addClass('active').prepend('<i class="icon-comm-berry"></i>');
+    } else if (url.indexOf("rank") != -1) {
+        $('#nav-hot').addClass('active').prepend('<i class="icon-comm-berry"></i>');
+    } else if (url.indexOf("booklist") != -1) {
+        $('#nav-list').addClass('active').prepend('<i class="icon-comm-berry"></i>');
+    } else {
+        $('#nav-index').addClass('active').prepend('<i class="icon-comm-berry"></i>');
+    }
+
+    $('#J_searchBtn').click(function(){
+        let keyword = $('#J_searchKeywords').val()
+        location.href = '/search?keyword=' + keyword
+    });
+    //监听回车提交搜索
+    $(document).keyup(function(e){
+        if(e.keyCode == 13){
+            $('#J_searchBtn').click();
+        }
+    });
 </script>

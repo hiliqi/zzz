@@ -1,0 +1,152 @@
+{extend name="./template/fense/pc/pub/ubase.html" /}
+{block name="seo"}
+<title>我的收藏-{$site_name}</title>
+{/block}
+<!-- 内容 -->
+{block name="content"}
+<div class="main-container">
+    {include file="./template/fense/pc/pub/umenu.html"}
+    <!-- main-content -->
+    <div class="main-content--aside">
+        <!-- title -->
+        <div class="main-content_title">
+            <h3>我的收藏</h3>
+            <!-- toolbox -->
+            <div class="main-content__title--toolbox">
+                <div class="j-collection-toolbox clear-btn">
+                    <i class="iconfont icon-clearlist"></i> 整理收藏
+                </div>
+                <div class="j-collection-feature toolbox-btn layui-form hide">
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="select-all" lay-skin="primary" lay-filter="select-all" title="全选">
+                    </div>
+                    <div class="btn-group">
+                        <span class="j-collection-delete delete-btn">删除收藏</span>
+                        <span class="j-collection-cancel cancel-btn">取消</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- comic-list -->
+        <div class="j-collection-list main-content__comic-list">
+            <ul class="user-comic-list">
+                {raccoon:favors name="favors" where="user_id='$xwx_user_id'"}
+                <li class="user-comic-item" data-id='{$vo.id}'>
+                    <div class="j-item-select user-comic-item__select" data-id="{$vo.id}">
+                        <i class="pic-select"></i>
+                    </div>
+                    <a class="user-comic-item__cover" href="/{$book_ctrl}/{$vo.book.param}" target="_blank">
+                        <img src="{$vo.book.cover_url}">
+                    </a>
+                    <div class="user-comic-item__detail">
+                        <p class="user-comic-item--name">
+                            <a class="text-overflow" href="/{$book_ctrl}/{$vo.book.param}" target="_blank">
+                                {$vo.book.book_name}
+                            </a>
+                        </p>
+                        <p class="user-comic-item--text user-comic-item--latest">
+                            <a class="text-overflow--gray" href="/{$chapter_ctrl}/{$vo.book.last_chapter_id}" target="_blank">
+                                更至：{$vo.book.last_chapter}
+                            </a>
+                        </p>
+                    </div>
+                </li>
+                {/raccoon:favors}
+
+                {if count($favors) <= 0}
+                <div class="no-collection"></div>
+                {/if}
+            </ul>
+        </div>
+        {if $page.last_page > 1}
+        <div class="acgn-pages acgn-mb24 J_pages">
+            {if $page.current_page == 1}
+            <span class="acgn-prev"><i class="ift-left"></i></span>
+            {else}
+            <a class="acgn-next" href="/bookshelf?page={$page.current_page-1}{$param}"><i class="ift-left"></i></a>
+            {/if}
+
+            {for start="1" end="$page.last_page + 1"}
+            {if $i == $page.current_page }
+            <a href="/bookshelf?page={$i}{$param}" class="on">{$i}</a>
+            {elseif ($i > $page.current_page - 4 && $i < $page.current_page + 5)/}
+            <a href="/bookshelf?page={$i}{$param}" title="第{$i}页">{$i}</a>
+            {/if}
+            {/for}
+
+            {if $page.current_page == $page.last_page}
+            <span class="acgn-prev"><i class="ift-right"></i></span>
+            {else}
+            <a class="acgn-next" href="/bookshelf?page={$page.current_page+1}{$param}"><i class="ift-right"></i></a>
+            {/if}
+        </div>
+        {/if}
+    </div>
+</div>
+<script>
+    //整理收藏
+    $('.clear-btn').click(function(){
+        $('.toolbox-btn,.j-item-select').show();
+        $(this).hide();
+    });
+    //整理收藏
+    $('.cancel-btn').click(function(){
+        $('.toolbox-btn,.j-item-select').hide();
+        $('.clear-btn').show();
+    });
+    layui.form.on('checkbox(select-all)', function(data){
+        if (data.elem.checked) {
+            $(data.elem).attr('checked', true);
+            $('.j-collection-list').find('.j-item-select').addClass('user-comic-item--selected').show();
+        } else {
+            $(data.elem).attr('checked', false);
+            $('.j-collection-list').find('.j-item-select').removeClass('user-comic-item--selected');
+        }
+    });
+    //单选
+    $('.j-item-select').click(function(){
+        if($(this).hasClass('user-comic-item--selected')) {
+            $(this).removeClass('user-comic-item--selected');
+        }else{
+            $(this).addClass('user-comic-item--selected').show();
+        }
+    });
+    //删除事件
+    $('.j-collection-delete').click(function(){
+        // 如果禁用状态则不处理
+        layer.open({
+            content: '亲，确定要删除吗？',
+            btn: ['确定', '取消'],
+            yes: function(index) {
+                let ids = []
+                $('.user-comic-item--selected').each(function( index ) {
+                    ids.push($(this).attr('data-id'))
+                });
+                let str = ids.join()
+                if (ids.length > 0) {
+                    $.ajax({
+                        url: '/delfavors',
+                        data: {ids: str},
+                        type: 'POST',
+                        dataType:'json',
+                        async: false,
+                        success:function(res){
+                            if (res.err === "0") {
+                                layer.msg(res.msg);
+                            } else {
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg("请选择要删除的收藏或历史记录");
+                }
+                setTimeout(function () {
+                    location.reload();
+                },2);
+            }
+        });
+
+    });
+</script>
+{/block}

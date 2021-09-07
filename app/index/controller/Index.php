@@ -34,7 +34,7 @@ class Index extends Base
 
        
         View::assign([
-            //'hot_search' => $hot_search,
+            'hot_search' => [],
             'keyword' => $keyword
         ]);
         return view($this->tpl);

@@ -9,8 +9,8 @@ return [
        'appkey' => '', //商户key
        'getway' => 'https://gateway.fun-pays.com/Pay/Index',
        'channel' => [
-           ['code' => 'alipay', 'img' => 'alipay', 'title' => '支付宝'],
-           ['code' => 'wxpay', 'img' => 'weixin', 'title' => '微信支付'],
+           ['code' => 'alipay', 'img' => 'zfb', 'title' => '支付宝'],
+           ['code' => 'wxpay', 'img' => 'wx', 'title' => '微信支付'],
            ['code' => 'qq', 'img' => 'qq', 'title' => 'QQ钱包']
        ]
    ],

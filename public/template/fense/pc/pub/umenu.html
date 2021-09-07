@@ -1,0 +1,64 @@
+<div class="aside-user">
+    <dl class="aside-user--first">
+        <dt id="left-home" class="aside-user__dt--selected">
+            <i class="iconfont icon-door"></i>
+            <a rel="nofollow" href="/ucenter">用户中心</a>
+        </dt>
+    </dl>
+    <dl>
+        <dt>
+            <i class="layui-icon layui-icon-read"></i>漫画专区
+        </dt>
+        <dd id="left-fav">
+            <a rel="nofollow" href="/bookshelf">我的收藏</a>
+        </dd>
+        <dd id="left-read">
+            <a rel="nofollow" href="/history">阅读历史</a>
+        </dd>
+        <dd id="left-comic">
+            <a rel="nofollow" href="/buyhistory">我的购买</a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <i class="layui-icon layui-icon-rmb"></i>财务记录
+        </dt>
+        <dd id="left-order">
+            <a rel="nofollow" href="/chargehistory">充值记录</a>
+        </dd>
+        <dd id="left-buy">
+            <a rel="nofollow" href="/spendinghistory">消费记录</a>
+        </dd>
+        <dd>
+            <a rel="nofollow" href="/cashhistory">提现记录</a>
+        </dd>
+        <dd>
+            <a rel="nofollow" onclick="vipexchange()">兑换vip</a>
+        </dd>
+    </dl>
+    <dl>
+        <dt>
+            <i class="layui-icon layui-icon-set"></i>账户设置
+        </dt>
+        <dd id="left-info">
+            <a rel="nofollow" href="/userinfo">修改资料</a>
+        </dd>
+        <dd id="left-pass">
+            <a rel="nofollow" href="/resetpwd">修改密码</a>
+        </dd>
+        <dd id="left-bind">
+            <a rel="nofollow" href="/bindphone">绑定手机</a>
+        </dd>
+    </dl>
+</div>
+<script>
+    function vipexchange()
+    {
+        layer.open({
+            title: '兑换vip',
+            type: 2,//很关键，只有type=2时，才会访问其他页面，否则以字符串的格式显示
+            content: '/vipexchange',//问号后面向子页面传递参数，可以多个
+            area: ['1000px', '480px'],
+        });
+    }
+</script>

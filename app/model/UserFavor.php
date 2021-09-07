@@ -45,7 +45,7 @@ class UserFavor extends Model
         return $paged;
     }
 
-    public function delFavors($uid, $ids)
+    public static function delFavors($uid, $ids)
     {
         $where[] = ['user_id', '=', $uid];
         $where[] = ['book_id', 'in', $ids];

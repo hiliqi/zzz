@@ -1,0 +1,110 @@
+{extend name="./template/fense/pc/pub/base.html" /}
+{block name="seo"}
+<title>漫画更新榜-{$site_name}</title>
+{/block}
+{block name="css"}
+<link rel="stylesheet" href="/template/fense/css/rank.css" type="text/css">
+{/block}
+{block name="content"}
+<div class="acgn-container">
+    <div class="acgn-clearfix">
+        <div class="acgn-col-24 acgn-col-space-none">
+            <div class="acgn-page-content">
+                <div class="acgn-row">
+                    <div class="acgn-col-24 crumb J_crumb">
+                        <em>当前位置 :</em>
+                        <a href="/" title="{$site_name}">{$site_name}</a>&gt;
+                        <a href="/{$update_act}" title="更新漫画">更新漫画</a>&gt;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="acgn-row">
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <div class="acgn-rank-header-link">
+                <ul class="acgn-rank-list acgn-clearfix">
+                    {for start="0" end="7"}
+                    <li class="update-nav item {$day == $i ? 'active' : ''}">
+                        {if $day == $i}<i class="icon-active-rabbit active-rank"></i>{/if}
+                        <a class="bt_daykey" href="javascript:void(0);" data-val="{$i}"></a>
+                    </li>
+                    {/for}
+                </ul>
+            </div>
+        </div>
+        <script src="https://lib.baomitu.com/moment.js/2.24.0/moment.min.js"></script>
+        <script src="https://lib.baomitu.com/moment.js/2.24.0/locale/zh-cn.js"></script>
+        <script>
+            $('.bt_daykey').each(function () {
+                var day = $(this).attr('data-val');
+                $(this).html(moment().subtract(day,'days').format('dddd').replace('星期','周'));
+                $(this).click(function () {
+                    var date = moment().subtract(day,'days').format('YYYY-MM-DD');
+                    location.href = '/{$update_act}?date=' + date + '&day=' + day;
+                })
+            })
+        </script>
+        <div class="acgn-col-24 acgn-col-space-middle">
+            <ul class="comic-sort-list acgn-col4 acgn-comic-list">
+                {raccoon:pagedbooks name="pagedBooks" pagesize="30" order="last_time desc"
+                where="last_time='$time'"}
+                <li class="acgn-item comic-item acgn-clearfix">
+                    <a class="acgn-thumbnail" href="/{$book_ctrl}/{$vo.param}" title="{$vo.book_name}">
+                        <img class="cover" src="/template/fense/images/space.gif"
+                             alt="{$vo.book_name}" style="background: url('{$vo.cover_url}') center center / cover no-repeat; opacity: 1;">
+                        <div class="wave-container">
+                            <div class="order-by">
+                                <i class="icon-hot"></i>
+                                <span>{$vo.hits}人气</span>
+                            </div>
+                        </div>
+                    </a>
+                    <div class="acgn-info">
+                        <h3 class="comic-name acgn-title">
+                            <a href="/{$book_ctrl}/{$vo.param}" target="_blank" title="{$vo.book_name}">
+                                {if $i < 4}
+                                <span class="sort-img">
+                                        <img class="sort-img-cont" style="position:absolute;z-index:-1" src="/template/fense/images/rank-sort.png">
+                                        {$i}
+                                    </span>
+                                {else/}
+                                {$i}
+                                {/if}
+                                {$vo.book_name}
+                            </a>
+                        </h3>
+                        <div class="comic-desc acgn-desc">
+                            <p>{$vo.summary|subtext=12}</p>
+                        </div>
+                    </div>
+                </li>
+                {/raccoon:pagedbooks}
+            </ul>
+        </div>
+        {if $page.last_page > 1}
+        <div class="acgn-pages acgn-mb24 J_pages">
+            {if $page.current_page == 1}
+            <span class="acgn-prev"><i class="ift-left"></i></span>
+            {else}
+            <a class="acgn-next" href="/{$update_act}?page={$page.current_page-1}{$param}"><i class="ift-left"></i></a>
+            {/if}
+
+            {for start="1" end="$page.last_page + 1"}
+            {if $i == $page.current_page }
+            <a href="/{$update_act}?page={$i}{$param}" class="on">{$i}</a>
+            {elseif ($i > $page.current_page - 4 && $i < $page.current_page + 5)/}
+            <a href="/{$update_act}?page={$i}{$param}" title="第{$i}页">{$i}</a>
+            {/if}
+            {/for}
+
+            {if $page.current_page == $page.last_page}
+            <span class="acgn-prev"><i class="ift-right"></i></span>
+            {else}
+            <a class="acgn-next" href="/{$update_act}?page={$page.current_page+1}{$param}"><i class="ift-right"></i></a>
+            {/if}
+        </div>
+        {/if}
+    </div>
+</div>
+{/block}

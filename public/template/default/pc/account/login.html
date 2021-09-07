@@ -107,9 +107,9 @@
     }
 
     function login(){
-        var $username = $("#txt_username");
-        var $pwd = $("#txt_password");
-        var r = Math.random()
+        let $username = $("#txt_username");
+        let $pwd = $("#txt_password");
+        let r = Math.random()
         if (!$username || $.trim($username.val()) === "") {
             ShowDialog("必须填写用户名");
             $username.focus().css({ outlineWidth: 1, outlineColor: "#fd113a" });

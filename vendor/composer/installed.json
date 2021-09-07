@@ -1,6 +1,60 @@
 {
     "packages": [
         {
+            "name": "fengqi/hanzi",
+            "version": "v0.1.3",
+            "version_normalized": "0.1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fengqi/hanzi.git",
+                "reference": "42f23f129064e2788509531f78304cf4071de226"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fengqi/hanzi/zipball/42f23f129064e2788509531f78304cf4071de226",
+                "reference": "42f23f129064e2788509531f78304cf4071de226",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "time": "2021-07-21T06:43:53+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "fengqi\\Hanzi\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "fengqi",
+                    "email": "lyf362345@gmail.com",
+                    "homepage": "http://fengqi.me"
+                }
+            ],
+            "description": "获取汉字的拼音, 或者简繁体转换.",
+            "homepage": "https://github.com/fengqi/hanzi",
+            "keywords": [
+                "Pinyin",
+                "fanti",
+                "hanzi",
+                "jianti"
+            ],
+            "support": {
+                "issues": "https://github.com/fengqi/hanzi/issues",
+                "source": "https://github.com/fengqi/hanzi/tree/v0.1.3"
+            },
+            "install-path": "../fengqi/hanzi"
+        },
+        {
             "name": "firebase/php-jwt",
             "version": "v5.4.0",
             "version_normalized": "5.4.0.0",
